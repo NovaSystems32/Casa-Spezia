@@ -226,6 +226,16 @@ img { max-width: 100%; display: block; }
 .product-card:has(.product-tag.pinned) { border-color: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
 .product-tag.pinned { background: var(--yellow); color: var(--dark); }
 
+/* ===== MODAL FORMAS DE PAGO ===== */
+.pagos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.pago-card { border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; transition: all .2s; }
+.pago-card:hover { border-color: var(--yellow); background: var(--yellow-soft); transform: translateY(-2px); }
+.pago-icon { font-size: 32px; display: block; margin-bottom: 8px; }
+.pago-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.pago-card p  { font-size: 12px; color: var(--gray); line-height: 1.5; }
+.pagos-nota { background: var(--yellow-soft); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; font-size: 13px; line-height: 1.8; }
+@media (max-width: 480px) { .pagos-grid { grid-template-columns: 1fr; } }
+
 /* ===== LOW STOCK TAG ===== */
 .low-stock { font-size: 11px; color: #92400e; background: #fef9c3; padding: 2px 8px; border-radius: 50px; margin-bottom: 8px; font-weight: 600; }
 

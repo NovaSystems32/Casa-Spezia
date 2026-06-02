@@ -14,7 +14,7 @@
     <div class="header-top">
       <div class="container">
         <span>📦 Envío gratis en compras mayores a $50.000</span>
-        <span>📞 3571662603 &nbsp;|&nbsp; Lun–Sáb 8–20h</span>
+        <span>📞 3571662603 &nbsp;|&nbsp; Lun–Vie 8–12 / 15–19 &nbsp;·&nbsp; Sáb 8–12:30</span>
       </div>
     </div>
     <div class="header-main">
@@ -206,7 +206,7 @@
             <span class="logo-sub">Ferretería</span>
           </div>
         </div>
-        <p>Tu ferretería de confianza desde 2003. Calidad, variedad y el mejor servicio.</p>
+        <p>Tu ferretería de confianza. Calidad, variedad y el mejor servicio.</p>
         <div class="social-links">
           <a href="#">📘</a><a href="#">📷</a><a href="#">🐦</a><a href="#">▶️</a>
         </div>
@@ -225,7 +225,7 @@
         <h4>Información</h4>
         <ul>
           <li><a href="#">Sobre nosotros</a></li>
-          <li><a href="#">Formas de pago</a></li>
+          <li><a href="#" onclick="openPagosModal();return false;">Formas de pago</a></li>
           <li><a href="#">Envíos y devoluciones</a></li>
           <li><a href="#">Preguntas frecuentes</a></li>
           <li><a href="admin.html">Panel Admin</a></li>
@@ -234,10 +234,11 @@
       <div class="footer-col">
         <h4>Contacto</h4>
         <ul>
-          <li>📍 Av. San Martín 359</li>
+          <li>📍 Av. San Martín 359, Tancacha - Córdoba</li>
           <li>📞 3571662603</li>
           <li>✉️ casaspezia@hotmail.com</li>
-          <li>🕐 Lun–Sáb: 8:00 – 20:00</li>
+          <li>🕐 Lun–Vie: 08:00–12:00 / 15:00–19:00</li>
+          <li>🕐 Sáb: 08:00–12:30</li>
         </ul>
       </div>
     </div>
@@ -335,6 +336,53 @@
           <p class="order-contact">Te contactaremos al <strong id="ckTelShow"></strong> para confirmar el pedido.</p>
           <button class="btn-primary full-width" onclick="closeCheckout()">Volver a la tienda</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FORMAS DE PAGO -->
+  <div class="modal-overlay" id="pagosOverlay" onclick="closePagosModal()"></div>
+  <div class="modal" id="pagosModal">
+    <div class="modal-header">
+      <h3>💳 Formas de pago</h3>
+      <button onclick="closePagosModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="pagos-grid">
+        <div class="pago-card">
+          <span class="pago-icon">💵</span>
+          <h4>Efectivo</h4>
+          <p>Pagá en el local o al momento de la entrega. Sin recargo.</p>
+        </div>
+        <div class="pago-card">
+          <span class="pago-icon">🏦</span>
+          <h4>Transferencia bancaria</h4>
+          <p>Transferí al alias o CBU y envianos el comprobante. Sin recargo.</p>
+        </div>
+        <div class="pago-card">
+          <span class="pago-icon">💙</span>
+          <h4>MercadoPago</h4>
+          <p>Pagá con tu cuenta de MercadoPago, QR o link de pago.</p>
+        </div>
+        <div class="pago-card">
+          <span class="pago-icon">💳</span>
+          <h4>Tarjeta de débito</h4>
+          <p>Todas las tarjetas de débito. Sin recargo.</p>
+        </div>
+        <div class="pago-card">
+          <span class="pago-icon">💳</span>
+          <h4>Tarjeta de crédito</h4>
+          <p>Hasta 12 cuotas sin interés con todas las tarjetas.</p>
+        </div>
+        <div class="pago-card">
+          <span class="pago-icon">📱</span>
+          <h4>Billeteras digitales</h4>
+          <p>Ualá, Naranja X, Modo y otras billeteras virtuales.</p>
+        </div>
+      </div>
+      <div class="pagos-nota">
+        <strong>📍 Retiro en tienda:</strong> Av. San Martín 359, Tancacha - Córdoba<br/>
+        <strong>📞 Consultas:</strong> 3571662603 &nbsp;·&nbsp; casaspezia@hotmail.com
       </div>
     </div>
   </div>

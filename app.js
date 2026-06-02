@@ -1,38 +1,5 @@
-// ===== PRODUCTOS BASE (se mezclan con los del admin via localStorage) =====
-const defaultProducts = [
-  { id:1,  name:'Taladro Percutor 750W',         brand:'Black & Decker', category:'herramientas', emoji:'🔩', price:18990, oldPrice:24990, rating:4.8, reviews:312, tag:'sale',  cuotas:12, stock:15 },
-  { id:2,  name:'Set Destornilladores 12 piezas', brand:'Stanley',        category:'herramientas', emoji:'🔧', price:5490,  oldPrice:null,  rating:4.6, reviews:187, tag:'new',   cuotas:6,  stock:30 },
-  { id:3,  name:'Nivel Digital 60cm',             brand:'Bahco',          category:'herramientas', emoji:'📏', price:8990,  oldPrice:11990, rating:4.7, reviews:94,  tag:'sale',  cuotas:6,  stock:12 },
-  { id:4,  name:'Sierra Circular 1400W',          brand:'Bosch',          category:'herramientas', emoji:'⚙️', price:29990, oldPrice:36990, rating:4.9, reviews:201, tag:'sale',  cuotas:12, stock:8  },
-  { id:5,  name:'Llave Inglesa 12"',              brand:'Bahco',          category:'herramientas', emoji:'🔑', price:3990,  oldPrice:null,  rating:4.5, reviews:76,  tag:null,   cuotas:3,  stock:20 },
-  { id:6,  name:'Martillo de Uña 500g',           brand:'Stanley',        category:'herramientas', emoji:'🔨', price:2990,  oldPrice:null,  rating:4.4, reviews:143, tag:null,   cuotas:3,  stock:25 },
-  { id:7,  name:'Disyuntor Termomagnético 20A',   brand:'Schneider',      category:'electricidad', emoji:'⚡', price:2490,  oldPrice:3200,  rating:4.7, reviews:88,  tag:'sale',  cuotas:3,  stock:40 },
-  { id:8,  name:'Cable Unipolar 2.5mm x 100m',   brand:'Prysmian',       category:'electricidad', emoji:'🔌', price:12990, oldPrice:15990, rating:4.8, reviews:256, tag:'sale',  cuotas:6,  stock:10 },
-  { id:9,  name:'Tomacorriente Doble c/tierra',   brand:'Bticino',        category:'electricidad', emoji:'🔋', price:890,   oldPrice:null,  rating:4.6, reviews:321, tag:'new',   cuotas:1,  stock:60 },
-  { id:10, name:'Tablero Eléctrico 12 Bocas',     brand:'Schneider',      category:'electricidad', emoji:'🗃️', price:7990,  oldPrice:9500,  rating:4.7, reviews:112, tag:'sale',  cuotas:6,  stock:7  },
-  { id:11, name:'Caño Corrugado 25mm x 25m',      brand:'Iram',           category:'electricidad', emoji:'🌀', price:1890,  oldPrice:null,  rating:4.3, reviews:67,  tag:null,   cuotas:1,  stock:30 },
-  { id:12, name:'Cinta Aisladora 10m x5',         brand:'3M',             category:'electricidad', emoji:'🩹', price:990,   oldPrice:null,  rating:4.5, reviews:408, tag:null,   cuotas:1,  stock:80 },
-  { id:13, name:'Inodoro Salida Dual',             brand:'FV',             category:'plomeria',     emoji:'🚽', price:24990, oldPrice:29990, rating:4.6, reviews:143, tag:'sale',  cuotas:12, stock:5  },
-  { id:14, name:'Canilla Monocomando Cocina',      brand:'Grohe',          category:'plomeria',     emoji:'🚿', price:15990, oldPrice:19990, rating:4.8, reviews:97,  tag:'sale',  cuotas:6,  stock:9  },
-  { id:15, name:'Cinta Teflón x 10 unidades',     brand:'Iram',           category:'plomeria',     emoji:'🧵', price:590,   oldPrice:null,  rating:4.4, reviews:512, tag:null,   cuotas:1,  stock:100},
-  { id:16, name:'Flexible Acero 30cm',            brand:'Ferrum',         category:'plomeria',     emoji:'🔗', price:890,   oldPrice:null,  rating:4.3, reviews:178, tag:'new',   cuotas:1,  stock:50 },
-  { id:17, name:'Pintura Látex Interior 20L',      brand:'Sherwin Williams',category:'pintura',     emoji:'🎨', price:16990, oldPrice:20990, rating:4.7, reviews:234, tag:'sale',  cuotas:6,  stock:18 },
-  { id:18, name:'Rodillo Antialpiste 22cm',        brand:'Montana',        category:'pintura',      emoji:'🖌️', price:1490,  oldPrice:null,  rating:4.5, reviews:167, tag:null,   cuotas:1,  stock:35 },
-  { id:19, name:'Enduído Interior 10L',            brand:'Sinteplast',     category:'pintura',      emoji:'🪣', price:8990,  oldPrice:11990, rating:4.6, reviews:89,  tag:'sale',  cuotas:6,  stock:20 },
-  { id:20, name:'Barniz Marino 4L',                brand:'Berdín',         category:'pintura',      emoji:'✨', price:7490,  oldPrice:null,  rating:4.4, reviews:55,  tag:'new',   cuotas:3,  stock:11 },
-  { id:21, name:'Tarugos Plásticos 8mm x 100u',   brand:'Fischer',        category:'fijacion',     emoji:'🔩', price:890,   oldPrice:null,  rating:4.8, reviews:634, tag:null,   cuotas:1,  stock:200},
-  { id:22, name:'Tornillos Cabeza Plana 4x40 x50', brand:'Fischer',       category:'fijacion',     emoji:'⚙️', price:490,   oldPrice:null,  rating:4.7, reviews:412, tag:null,   cuotas:1,  stock:300},
-  { id:23, name:'Silicona Neutra Transparente',    brand:'Sika',           category:'fijacion',     emoji:'💧', price:1290,  oldPrice:1590,  rating:4.6, reviews:289, tag:'sale',  cuotas:1,  stock:45 },
-  { id:24, name:'Pistola de Silicona Profesional', brand:'Ironside',       category:'fijacion',     emoji:'🔫', price:2490,  oldPrice:null,  rating:4.5, reviews:123, tag:'new',   cuotas:3,  stock:22 },
-  { id:25, name:'Cerradura Doble Paleta',          brand:'Yale',           category:'seguridad',    emoji:'🔐', price:6990,  oldPrice:8990,  rating:4.9, reviews:312, tag:'sale',  cuotas:6,  stock:14 },
-  { id:26, name:'Candado Arco Largo 50mm',         brand:'Abus',           category:'seguridad',    emoji:'🔒', price:3490,  oldPrice:null,  rating:4.8, reviews:198, tag:null,   cuotas:3,  stock:28 },
-  { id:27, name:'Cámara IP WiFi Exterior',         brand:'Hikvision',      category:'seguridad',    emoji:'📷', price:11990, oldPrice:14990, rating:4.7, reviews:267, tag:'sale',  cuotas:6,  stock:6  },
-  { id:28, name:'Alarma Inalámbrica 8 Zonas',      brand:'DSC',            category:'seguridad',    emoji:'🚨', price:19990, oldPrice:24990, rating:4.6, reviews:145, tag:'sale',  cuotas:12, stock:4  },
-  { id:29, name:'Pala de Punta Mango Largo',       brand:'Bellota',        category:'jardin',       emoji:'⛏️', price:4490,  oldPrice:5990,  rating:4.6, reviews:134, tag:'sale',  cuotas:3,  stock:16 },
-  { id:30, name:'Manguera Reforzada 3/4" x 20m',   brand:'Iram',           category:'jardin',       emoji:'🌊', price:5990,  oldPrice:null,  rating:4.5, reviews:211, tag:'new',   cuotas:3,  stock:19 },
-  { id:31, name:'Aspersor Giratorio 360°',         brand:'Gardena',        category:'jardin',       emoji:'💦', price:1990,  oldPrice:2490,  rating:4.4, reviews:87,  tag:'sale',  cuotas:1,  stock:33 },
-  { id:32, name:'Tijera de Podar Profesional',     brand:'Bellota',        category:'jardin',       emoji:'✂️', price:3290,  oldPrice:null,  rating:4.7, reviews:156, tag:null,   cuotas:3,  stock:21 },
-];
+// ===== SIN PRODUCTOS BASE — todos se cargan desde el admin =====
+const defaultProducts = [];
 
 // ===== ESTADO =====
 let cart = [];
@@ -358,6 +325,16 @@ function toggleFav(id) {
 
 function toggleFavorites() {
   showToast('💡 Sección de favoritos próximamente');
+}
+
+// ===== MODAL FORMAS DE PAGO =====
+function openPagosModal() {
+  document.getElementById('pagosModal').classList.add('open');
+  document.getElementById('pagosOverlay').classList.add('open');
+}
+function closePagosModal() {
+  document.getElementById('pagosModal').classList.remove('open');
+  document.getElementById('pagosOverlay').classList.remove('open');
 }
 
 // ===== TOAST =====
