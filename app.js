@@ -51,7 +51,7 @@ function showErrorGrid() {
 
 // ===== RENDER PRODUCTS =====
 function renderProducts() {
-  let list = allProducts.filter(p => !p.stock || p.stock > 0);
+  let list = allProducts; // mostramos todos, incluso sin stock
 
   if (currentCategory !== 'all') list = list.filter(p => p.category === currentCategory);
   if (currentSearch) {
@@ -156,11 +156,16 @@ function productCard(p) {
           : 'Pago único'}
       </div>
       ${lowStock ? `<div class="low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Últimas ${p.stock} unidades</div>` : ''}
-      <button class="btn-add ${inCart ? 'added' : ''}" onclick="addToCart('${p.firestoreId}')">
-        ${inCart
-          ? '<i class="fa-solid fa-check"></i> En el carrito'
-          : '<i class="fa-solid fa-plus"></i> Agregar al carrito'}
-      </button>
+      ${p.stock === 0
+        ? `<button class="btn-add btn-sin-stock" disabled>
+             <i class="fa-solid fa-ban"></i> Sin stock
+           </button>`
+        : `<button class="btn-add ${inCart ? 'added' : ''}" onclick="addToCart('${p.firestoreId}')">
+             ${inCart
+               ? '<i class="fa-solid fa-check"></i> En el carrito'
+               : '<i class="fa-solid fa-plus"></i> Agregar al carrito'}
+           </button>`
+      }
     </div>
   </div>`;
 }
@@ -346,7 +351,22 @@ async function confirmOrder() {
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando…';
 
-    await db.collection('orders').add(order);
+    // usar batch: guardar pedido + descontar stock en una sola operación
+    const batch = db.batch();
+
+    // 1) agregar el pedido
+    const orderRef = db.collection('orders').doc();
+    batch.set(orderRef, order);
+
+    // 2) descontar stock de cada producto
+    cart.forEach(item => {
+      const prodRef = db.collection('products').doc(item.firestoreId);
+      const currentStock = item.stock || 0;
+      const newStock = Math.max(0, currentStock - item.qty);
+      batch.update(prodRef, { stock: newStock });
+    });
+
+    await batch.commit();
 
     document.getElementById('step1').style.display = 'none';
     document.getElementById('step2').style.display = 'block';
