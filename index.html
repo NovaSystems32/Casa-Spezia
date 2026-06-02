@@ -70,7 +70,7 @@
         </div>
         <div class="hero-stats">
           <div><strong>+5.000</strong><span>productos</span></div>
-          <div><strong>+20 años</strong><span>de experiencia</span></div>
+          <div><strong>+60 años</strong><span>de experiencia</span></div>
           <div><strong>4.9 ★</strong><span>calificación</span></div>
         </div>
       </div>
@@ -170,6 +170,15 @@
         <p>No encontramos productos para tu búsqueda.</p>
         <button class="btn-primary" onclick="filterCategory('all')">Ver todo el catálogo</button>
       </div>
+      <div class="show-more-wrap" id="showMoreWrap" style="display:none">
+        <div class="show-more-line"></div>
+        <button class="btn-show-more" id="showMoreBtn" onclick="toggleCatalog()">
+          <span id="showMoreText">Ver catálogo completo</span>
+          <span id="showMoreCount"></span>
+          <span id="showMoreArrow">↓</span>
+        </button>
+        <div class="show-more-line"></div>
+      </div>
     </div>
   </section>
 
@@ -227,7 +236,7 @@
         <ul>
           <li>📍 Av. San Martín 359</li>
           <li>📞 3571662603</li>
-          <li>✉️ ventas@casaspezia.com.ar</li>
+          <li>✉️ casaspezia@hotmail.com</li>
           <li>🕐 Lun–Sáb: 8:00 – 20:00</li>
         </ul>
       </div>

@@ -40,6 +40,8 @@ let favorites = [];
 let currentCategory = 'all';
 let currentSearch = '';
 let currentSort = 'default';
+let catalogExpanded = false;
+const INITIAL_LIMIT = 8;
 
 function getProducts() {
   const extra = JSON.parse(localStorage.getItem('cs_products') || '[]');
@@ -67,20 +69,48 @@ function renderProducts() {
       p.category.toLowerCase().includes(q)
     );
   }
+  // anclados primero
+  list.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
   if (currentSort === 'price-asc')  list.sort((a,b) => a.price - b.price);
   if (currentSort === 'price-desc') list.sort((a,b) => b.price - a.price);
   if (currentSort === 'name')       list.sort((a,b) => a.name.localeCompare(b.name));
   if (currentSort === 'rating')     list.sort((a,b) => b.rating - a.rating);
 
-  const grid = document.getElementById('productsGrid');
+  const grid      = document.getElementById('productsGrid');
   const noResults = document.getElementById('noResults');
+  const moreWrap  = document.getElementById('showMoreWrap');
+  const moreBtn   = document.getElementById('showMoreBtn');
+  const moreText  = document.getElementById('showMoreText');
+  const moreCount = document.getElementById('showMoreCount');
+  const moreArrow = document.getElementById('showMoreArrow');
 
   if (list.length === 0) {
     grid.innerHTML = '';
     noResults.classList.remove('hidden');
+    moreWrap.style.display = 'none';
   } else {
     noResults.classList.add('hidden');
-    grid.innerHTML = list.map(p => productCard(p)).join('');
+    const isFiltered = currentCategory !== 'all' || currentSearch;
+    const visible = (isFiltered || catalogExpanded) ? list : list.slice(0, INITIAL_LIMIT);
+    grid.innerHTML = visible.map(p => productCard(p)).join('');
+
+    if (!isFiltered && list.length > INITIAL_LIMIT) {
+      moreWrap.style.display = 'flex';
+      const hidden = list.length - INITIAL_LIMIT;
+      if (catalogExpanded) {
+        moreText.textContent  = 'Ver menos';
+        moreCount.textContent = '';
+        moreArrow.textContent = '↑';
+        moreBtn.classList.add('expanded');
+      } else {
+        moreText.textContent  = 'Ver catálogo completo';
+        moreCount.textContent = `(${hidden} productos más)`;
+        moreArrow.textContent = '↓';
+        moreBtn.classList.remove('expanded');
+      }
+    } else {
+      moreWrap.style.display = 'none';
+    }
   }
 
   const titles = { all:'Todos los productos', herramientas:'Herramientas', electricidad:'Electricidad', plomeria:'Plomería', pintura:'Pintura', fijacion:'Fijación', seguridad:'Seguridad', jardin:'Jardín' };
@@ -101,7 +131,7 @@ function productCard(p) {
       ${p.photo
         ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" />`
         : `<span>${p.emoji}</span>`}
-      ${p.tag ? `<span class="product-tag ${p.tag === 'new' ? 'new' : ''}">${p.tag === 'sale' ? `${discount}% OFF` : 'Nuevo'}</span>` : ''}
+      ${p.pinned ? `<span class="product-tag pinned">📌 Destacado</span>` : p.tag ? `<span class="product-tag ${p.tag === 'new' ? 'new' : ''}">${p.tag === 'sale' ? `${discount}% OFF` : 'Nuevo'}</span>` : ''}
       <button class="product-fav ${isFav ? 'active' : ''}" onclick="toggleFav(${p.id})">${isFav ? '❤️' : '♡'}</button>
     </div>
     <div class="product-body">
@@ -151,6 +181,14 @@ function sortProducts() {
 
 function scrollToOffers() {
   document.getElementById('offers').scrollIntoView({ behavior:'smooth' });
+}
+
+function toggleCatalog() {
+  catalogExpanded = !catalogExpanded;
+  renderProducts();
+  if (!catalogExpanded) {
+    document.getElementById('products').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
 }
 
 // ===== CARRITO =====

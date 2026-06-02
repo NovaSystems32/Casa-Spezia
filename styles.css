@@ -207,6 +207,25 @@ img { max-width: 100%; display: block; }
 .cart-total strong { font-size: 22px; font-weight: 800; }
 .full-width { width: 100%; padding: 13px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 
+/* ===== SHOW MORE ===== */
+.show-more-wrap { display: flex; align-items: center; gap: 16px; margin-top: 32px; }
+.show-more-line { flex: 1; height: 1px; background: var(--border); }
+.btn-show-more {
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  padding: 12px 28px; border-radius: 50px; font-size: 14px; font-weight: 700;
+  border: 2px solid var(--carbon); color: var(--carbon); background: var(--white);
+  transition: all .2s;
+}
+.btn-show-more:hover { background: var(--yellow); border-color: var(--yellow); transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn-show-more.expanded { border-color: var(--border); color: var(--gray); }
+.btn-show-more.expanded:hover { background: var(--light-gray); border-color: var(--border); }
+#showMoreCount { font-size: 12px; color: var(--gray); font-weight: 500; }
+#showMoreArrow { font-size: 16px; }
+
+/* ===== PINNED CARD ===== */
+.product-card:has(.product-tag.pinned) { border-color: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
+.product-tag.pinned { background: var(--yellow); color: var(--dark); }
+
 /* ===== LOW STOCK TAG ===== */
 .low-stock { font-size: 11px; color: #92400e; background: #fef9c3; padding: 2px 8px; border-radius: 50px; margin-bottom: 8px; font-weight: 600; }
 

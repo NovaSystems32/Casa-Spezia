@@ -273,7 +273,10 @@ function renderAdminProducts() {
         ${discount ? `<br><span style="font-size:11px;color:#16a34a">-${discount}%</span>` : ''}
       </td>
       <td><span class="stock-pill ${p.stock===0 ? 'out' : p.stock<=5 ? 'low' : 'ok'}">${p.stock}</span></td>
-      <td><span class="estado-badge ${p.stock > 0 ? 'estado-entregado' : 'estado-cancelado'}">${p.stock > 0 ? 'Activo' : 'Sin stock'}</span></td>
+      <td>
+        <span class="estado-badge ${p.stock > 0 ? 'estado-entregado' : 'estado-cancelado'}">${p.stock > 0 ? 'Activo' : 'Sin stock'}</span>
+        ${p.pinned ? '<span class="pin-badge">📌 Anclado</span>' : ''}
+      </td>
       <td><div class="action-btns">
         ${!isBase ? `<button class="btn-sm btn-edit" onclick="editProduct(${p.id})">Editar</button>` : '<span style="font-size:11px;color:#aaa">Base</span>'}
         ${!isBase ? `<button class="btn-sm btn-del"  onclick="deleteProduct(${p.id})">Eliminar</button>` : ''}
@@ -343,6 +346,7 @@ function openProductForm(id) {
   document.getElementById('pf_cuotas').value   = '1';
   document.getElementById('pf_category').value = 'herramientas';
   document.getElementById('productFormTitle').textContent = id ? 'Editar producto' : 'Nuevo producto';
+  document.getElementById('pf_pinned').checked = false;
   removePhoto();
 
   if (id) {
@@ -358,6 +362,7 @@ function openProductForm(id) {
       document.getElementById('pf_tag').value      = p.tag || '';
       document.getElementById('pf_cuotas').value   = p.cuotas || 1;
       document.getElementById('pf_category').value = p.category;
+      document.getElementById('pf_pinned').checked = !!p.pinned;
       if (p.photo) {
         document.getElementById('pf_photoData').value = p.photo;
         document.getElementById('photoPreview').innerHTML = `
@@ -390,6 +395,7 @@ function saveProduct() {
   const category = document.getElementById('pf_category').value;
   const editId   = document.getElementById('pf_id').value;
   const photo    = document.getElementById('pf_photoData').value || null;
+  const pinned   = document.getElementById('pf_pinned').checked;
 
   if (!name || !brand || isNaN(price) || isNaN(stock)) { showToast('⚠️ Completá los campos obligatorios'); return; }
 
@@ -397,9 +403,9 @@ function saveProduct() {
 
   if (editId) {
     const idx = extra.findIndex(p => p.id === parseInt(editId));
-    if (idx >= 0) extra[idx] = { ...extra[idx], name, brand, price, oldPrice, stock, emoji, tag, cuotas, category, photo };
+    if (idx >= 0) extra[idx] = { ...extra[idx], name, brand, price, oldPrice, stock, emoji, tag, cuotas, category, photo, pinned };
   } else {
-    extra.push({ id: Date.now(), name, brand, price, oldPrice, stock, emoji, tag, cuotas, category, photo, rating: 4.5, reviews: 0 });
+    extra.push({ id: Date.now(), name, brand, price, oldPrice, stock, emoji, tag, cuotas, category, photo, pinned, rating: 4.5, reviews: 0 });
   }
 
   saveExtraProducts(extra);
