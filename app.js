@@ -124,7 +124,9 @@ function productCard(p) {
   const isFav    = favorites.includes(p.firestoreId);
   const inCart   = cart.find(c => c.firestoreId === p.firestoreId);
   const stars    = '★'.repeat(Math.floor(p.rating || 4)) + ((p.rating||4) % 1 >= 0.5 ? '½' : '');
-  const lowStock = p.stock !== undefined && p.stock > 0 && p.stock <= 5;
+  const stockNum = Number(p.stock ?? 0);
+  const sinStock = stockNum <= 0;
+  const lowStock = !sinStock && stockNum <= 5;
 
   return `
   <div class="product-card">
@@ -155,8 +157,8 @@ function productCard(p) {
           ? `<span>${p.cuotas} cuotas sin interés de $${Math.round(p.price / p.cuotas).toLocaleString('es-AR')}</span>`
           : 'Pago único'}
       </div>
-      ${lowStock ? `<div class="low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Últimas ${p.stock} unidades</div>` : ''}
-      ${p.stock === 0
+      ${lowStock ? `<div class="low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Últimas ${stockNum} unidades</div>` : ''}
+      ${sinStock
         ? `<button class="btn-add btn-sin-stock" disabled>
              <i class="fa-solid fa-ban"></i> Sin stock
            </button>`
@@ -213,13 +215,26 @@ function toggleCatalog() {
 
 // ===== CARRITO =====
 function addToCart(firestoreId) {
+  // siempre leer stock actual de allProducts (en tiempo real desde Firestore)
   const product = allProducts.find(p => p.firestoreId === firestoreId);
   if (!product) return;
+
+  if (product.stock === 0) {
+    showToast('Sin stock disponible');
+    return;
+  }
+
   const existing = cart.find(c => c.firestoreId === firestoreId);
-  const maxQty   = product.stock || 99;
+  const maxQty   = product.stock ?? 99;
+
   if (existing) {
-    if (existing.qty >= maxQty) { showToast('⚠ Sin más stock disponible'); return; }
+    if (existing.qty >= maxQty) {
+      showToast('No hay más unidades disponibles');
+      return;
+    }
     existing.qty++;
+    // actualizar stock del item en carrito
+    existing.stock = product.stock;
   } else {
     cart.push({ ...product, qty: 1 });
   }
@@ -358,12 +373,13 @@ async function confirmOrder() {
     const orderRef = db.collection('orders').doc();
     batch.set(orderRef, order);
 
-    // 2) descontar stock de cada producto
+    // 2) descontar stock con increment (atómico, no importa el valor actual)
     cart.forEach(item => {
+      if (!item.firestoreId) return; // seguridad
       const prodRef = db.collection('products').doc(item.firestoreId);
-      const currentStock = item.stock || 0;
-      const newStock = Math.max(0, currentStock - item.qty);
-      batch.update(prodRef, { stock: newStock });
+      batch.update(prodRef, {
+        stock: firebase.firestore.FieldValue.increment(-item.qty)
+      });
     });
 
     await batch.commit();
