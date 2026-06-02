@@ -382,6 +382,15 @@ img { max-width: 100%; display: block; }
 #showMoreArrow { font-size: 13px; transition: transform .2s; }
 .btn-show-more.expanded #showMoreArrow { transform: rotate(180deg); }
 
+/* ===== GRID LOADING ===== */
+.grid-loading {
+  grid-column: 1 / -1;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 12px; padding: 60px 20px;
+  color: var(--gray); font-size: 15px;
+}
+.grid-loading i { font-size: 36px; color: var(--yellow); }
+
 /* ===== SHOW MORE ===== */
 .show-more-wrap { display: flex; align-items: center; gap: 16px; margin-top: 32px; }
 .show-more-line { flex: 1; height: 1px; background: var(--border); }

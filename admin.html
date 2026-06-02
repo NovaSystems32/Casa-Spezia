@@ -277,7 +277,7 @@
               </span>
             </label>
           </div>
-          <input type="hidden" id="pf_id" />
+          <input type="hidden" id="pf_fid" />
           <input type="hidden" id="pf_photoData" />
           <div class="form-group full" style="display:flex;gap:10px;margin-top:8px">
             <button class="btn-primary" style="flex:1" onclick="saveProduct()">Guardar producto</button>
@@ -317,6 +317,9 @@
 
   <div class="toast" id="adminToast"></div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>
