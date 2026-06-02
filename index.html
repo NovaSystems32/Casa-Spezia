@@ -6,6 +6,7 @@
   <title>Casa Spezia – Ferretería Online</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
@@ -13,8 +14,8 @@
   <header class="header">
     <div class="header-top">
       <div class="container">
-        <span>📦 Envío gratis en compras mayores a $50.000</span>
-        <span>📞 3571662603 &nbsp;|&nbsp; Lun–Vie 8–12 / 15–19 &nbsp;·&nbsp; Sáb 8–12:30</span>
+        <span><i class="fa-solid fa-box-open"></i> Envío gratis en compras mayores a $50.000</span>
+        <span><i class="fa-solid fa-phone"></i> 3571662603 &nbsp;|&nbsp; Lun–Vie 8–12 / 15–19 &nbsp;·&nbsp; Sáb 8–12:30</span>
       </div>
     </div>
     <div class="header-main">
@@ -28,31 +29,31 @@
         </div>
         <div class="search-bar">
           <input type="text" id="searchInput" placeholder="Buscar productos, marcas, categorías…" />
-          <button onclick="searchProducts()">🔍</button>
+          <button onclick="searchProducts()"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div class="header-actions">
           <button class="btn-icon" onclick="toggleFavorites()">
-            <span>♡</span>
+            <i class="fa-regular fa-heart"></i>
             <span class="badge" id="favBadge">0</span>
           </button>
           <button class="btn-icon cart-btn" onclick="toggleCart()">
-            <span>🛒</span>
+            <i class="fa-solid fa-cart-shopping"></i>
             <span class="badge" id="cartBadge">0</span>
           </button>
-          <button class="btn-account">Mi cuenta</button>
+          <button class="btn-account"><i class="fa-regular fa-user"></i> Mi cuenta</button>
         </div>
       </div>
     </div>
     <nav class="nav">
       <div class="container nav-inner">
         <button class="nav-link active" onclick="filterCategory('all')">Todo</button>
-        <button class="nav-link" onclick="filterCategory('herramientas')">Herramientas</button>
-        <button class="nav-link" onclick="filterCategory('electricidad')">Electricidad</button>
-        <button class="nav-link" onclick="filterCategory('plomeria')">Plomería</button>
-        <button class="nav-link" onclick="filterCategory('pintura')">Pintura</button>
-        <button class="nav-link" onclick="filterCategory('fijacion')">Fijación</button>
-        <button class="nav-link" onclick="filterCategory('seguridad')">Seguridad</button>
-        <button class="nav-link" onclick="filterCategory('jardin')">Jardín</button>
+        <button class="nav-link" onclick="filterCategory('herramientas')"><i class="fa-solid fa-hammer"></i> Herramientas</button>
+        <button class="nav-link" onclick="filterCategory('electricidad')"><i class="fa-solid fa-bolt"></i> Electricidad</button>
+        <button class="nav-link" onclick="filterCategory('plomeria')"><i class="fa-solid fa-faucet-drip"></i> Plomería</button>
+        <button class="nav-link" onclick="filterCategory('pintura')"><i class="fa-solid fa-paint-roller"></i> Pintura</button>
+        <button class="nav-link" onclick="filterCategory('fijacion')"><i class="fa-solid fa-screwdriver-wrench"></i> Fijación</button>
+        <button class="nav-link" onclick="filterCategory('seguridad')"><i class="fa-solid fa-lock"></i> Seguridad</button>
+        <button class="nav-link" onclick="filterCategory('jardin')"><i class="fa-solid fa-seedling"></i> Jardín</button>
       </div>
     </nav>
   </header>
@@ -71,12 +72,12 @@
         <div class="hero-stats">
           <div><strong>+5.000</strong><span>productos</span></div>
           <div><strong>+60 años</strong><span>de experiencia</span></div>
-          <div><strong>4.9 ★</strong><span>calificación</span></div>
+          <div><strong>4.9 <i class="fa-solid fa-star" style="color:var(--yellow);font-size:14px"></i></strong><span>calificación</span></div>
         </div>
       </div>
       <div class="hero-image">
         <div class="hero-card">
-          <div class="hero-icon">🔨</div>
+          <div class="hero-icon"><i class="fa-solid fa-hammer"></i></div>
           <div class="hero-card-text">
             <p>Kit profesional</p>
             <strong>Herramientas Stanley</strong>
@@ -84,7 +85,7 @@
           </div>
         </div>
         <div class="hero-card secondary">
-          <div class="hero-icon">⚡</div>
+          <div class="hero-icon"><i class="fa-solid fa-bolt"></i></div>
           <div class="hero-card-text">
             <p>Oferta especial</p>
             <strong>Material eléctrico</strong>
@@ -99,14 +100,14 @@
   <section class="quick-cats">
     <div class="container">
       <div class="cats-grid">
-        <button class="cat-card" onclick="filterCategory('herramientas')"><span class="cat-emoji">🔨</span><span>Herramientas</span></button>
-        <button class="cat-card" onclick="filterCategory('electricidad')"><span class="cat-emoji">⚡</span><span>Electricidad</span></button>
-        <button class="cat-card" onclick="filterCategory('plomeria')"><span class="cat-emoji">🚿</span><span>Plomería</span></button>
-        <button class="cat-card" onclick="filterCategory('pintura')"><span class="cat-emoji">🎨</span><span>Pintura</span></button>
-        <button class="cat-card" onclick="filterCategory('fijacion')"><span class="cat-emoji">🔩</span><span>Fijación</span></button>
-        <button class="cat-card" onclick="filterCategory('seguridad')"><span class="cat-emoji">🔐</span><span>Seguridad</span></button>
-        <button class="cat-card" onclick="filterCategory('jardin')"><span class="cat-emoji">🌱</span><span>Jardín</span></button>
-        <button class="cat-card" onclick="filterCategory('all')"><span class="cat-emoji">📦</span><span>Ver todo</span></button>
+        <button class="cat-card" onclick="filterCategory('herramientas')"><i class="fa-solid fa-hammer cat-icon"></i><span>Herramientas</span></button>
+        <button class="cat-card" onclick="filterCategory('electricidad')"><i class="fa-solid fa-bolt cat-icon"></i><span>Electricidad</span></button>
+        <button class="cat-card" onclick="filterCategory('plomeria')"><i class="fa-solid fa-faucet-drip cat-icon"></i><span>Plomería</span></button>
+        <button class="cat-card" onclick="filterCategory('pintura')"><i class="fa-solid fa-paint-roller cat-icon"></i><span>Pintura</span></button>
+        <button class="cat-card" onclick="filterCategory('fijacion')"><i class="fa-solid fa-screwdriver-wrench cat-icon"></i><span>Fijación</span></button>
+        <button class="cat-card" onclick="filterCategory('seguridad')"><i class="fa-solid fa-lock cat-icon"></i><span>Seguridad</span></button>
+        <button class="cat-card" onclick="filterCategory('jardin')"><i class="fa-solid fa-seedling cat-icon"></i><span>Jardín</span></button>
+        <button class="cat-card" onclick="filterCategory('all')"><i class="fa-solid fa-box-open cat-icon"></i><span>Ver todo</span></button>
       </div>
     </div>
   </section>
@@ -122,7 +123,7 @@
             <p>Hasta <strong>40% OFF</strong></p>
             <button class="btn-white" onclick="filterCategory('herramientas')">Comprar ahora</button>
           </div>
-          <span class="banner-emoji">🔩</span>
+          <i class="fa-solid fa-screwdriver-wrench banner-fa-icon"></i>
         </div>
         <div class="banner-card banner-blue">
           <div>
@@ -131,7 +132,7 @@
             <p>Cerraduras y alarmas inteligentes</p>
             <button class="btn-white" onclick="filterCategory('seguridad')">Ver más</button>
           </div>
-          <span class="banner-emoji">🔐</span>
+          <i class="fa-solid fa-shield-halved banner-fa-icon"></i>
         </div>
         <div class="banner-card banner-green">
           <div>
@@ -140,7 +141,7 @@
             <p>Herramientas y accesorios</p>
             <button class="btn-white" onclick="filterCategory('jardin')">Ver más</button>
           </div>
-          <span class="banner-emoji">🌿</span>
+          <i class="fa-solid fa-leaf banner-fa-icon"></i>
         </div>
       </div>
     </div>
@@ -166,7 +167,7 @@
       </div>
       <div class="products-grid" id="productsGrid"></div>
       <div class="no-results hidden" id="noResults">
-        <span>😕</span>
+        <i class="fa-solid fa-box-open" style="font-size:48px;color:#ccc;display:block;margin-bottom:12px"></i>
         <p>No encontramos productos para tu búsqueda.</p>
         <button class="btn-primary" onclick="filterCategory('all')">Ver todo el catálogo</button>
       </div>
@@ -175,7 +176,7 @@
         <button class="btn-show-more" id="showMoreBtn" onclick="toggleCatalog()">
           <span id="showMoreText">Ver catálogo completo</span>
           <span id="showMoreCount"></span>
-          <span id="showMoreArrow">↓</span>
+          <i class="fa-solid fa-chevron-down" id="showMoreArrow"></i>
         </button>
         <div class="show-more-line"></div>
       </div>
@@ -187,10 +188,26 @@
     <div class="container">
       <h2>¿Por qué elegir <span>Casa Spezia</span>?</h2>
       <div class="why-grid">
-        <div class="why-card"><span class="why-icon">🚚</span><h4>Envío rápido</h4><p>Entregamos en 24–48 hs. Envíos a todo el país.</p></div>
-        <div class="why-card"><span class="why-icon">✅</span><h4>Productos originales</h4><p>Solo vendemos marcas reconocidas con garantía de fábrica.</p></div>
-        <div class="why-card"><span class="why-icon">💳</span><h4>Pagá en cuotas</h4><p>Hasta 12 cuotas sin interés con todas las tarjetas.</p></div>
-        <div class="why-card"><span class="why-icon">🔄</span><h4>Devoluciones</h4><p>30 días para devolver o cambiar tu compra sin preguntas.</p></div>
+        <div class="why-card">
+          <i class="fa-solid fa-truck why-icon"></i>
+          <h4>Envío rápido</h4>
+          <p>Entregamos en 24–48 hs. Envíos a todo el país.</p>
+        </div>
+        <div class="why-card">
+          <i class="fa-solid fa-shield-check why-icon"></i>
+          <h4>Productos originales</h4>
+          <p>Solo vendemos marcas reconocidas con garantía de fábrica.</p>
+        </div>
+        <div class="why-card">
+          <i class="fa-solid fa-credit-card why-icon"></i>
+          <h4>Pagá en cuotas</h4>
+          <p>Hasta 12 cuotas sin interés con todas las tarjetas.</p>
+        </div>
+        <div class="why-card">
+          <i class="fa-solid fa-rotate-left why-icon"></i>
+          <h4>Devoluciones</h4>
+          <p>30 días para devolver o cambiar tu compra sin preguntas.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -208,7 +225,10 @@
         </div>
         <p>Tu ferretería de confianza. Calidad, variedad y el mejor servicio.</p>
         <div class="social-links">
-          <a href="#">📘</a><a href="#">📷</a><a href="#">🐦</a><a href="#">▶️</a>
+          <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
         </div>
       </div>
       <div class="footer-col">
@@ -234,11 +254,11 @@
       <div class="footer-col">
         <h4>Contacto</h4>
         <ul>
-          <li>📍 Av. San Martín 359, Tancacha - Córdoba</li>
-          <li>📞 3571662603</li>
-          <li>✉️ casaspezia@hotmail.com</li>
-          <li>🕐 Lun–Vie: 08:00–12:00 / 15:00–19:00</li>
-          <li>🕐 Sáb: 08:00–12:30</li>
+          <li><i class="fa-solid fa-location-dot fc-icon"></i> Av. San Martín 359, Tancacha - Córdoba</li>
+          <li><i class="fa-solid fa-phone fc-icon"></i> 3571662603</li>
+          <li><i class="fa-solid fa-envelope fc-icon"></i> casaspezia@hotmail.com</li>
+          <li><i class="fa-regular fa-clock fc-icon"></i> Lun–Vie: 08:00–12:00 / 15:00–19:00</li>
+          <li><i class="fa-regular fa-clock fc-icon"></i> Sáb: 08:00–12:30</li>
         </ul>
       </div>
     </div>
@@ -254,12 +274,12 @@
   <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
-      <h3>🛒 Mi carrito</h3>
-      <button onclick="toggleCart()">✕</button>
+      <h3><i class="fa-solid fa-cart-shopping"></i> Mi carrito</h3>
+      <button onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="cart-items" id="cartItems">
       <div class="cart-empty">
-        <span>🛒</span>
+        <i class="fa-solid fa-cart-shopping" style="font-size:48px;color:#ddd;display:block;margin-bottom:12px"></i>
         <p>Tu carrito está vacío</p>
         <button class="btn-primary" onclick="toggleCart()">Seguir comprando</button>
       </div>
@@ -269,7 +289,7 @@
         <span>Total:</span>
         <strong id="cartTotal">$0</strong>
       </div>
-      <button class="btn-primary full-width" onclick="openCheckout()">Finalizar compra</button>
+      <button class="btn-primary full-width" onclick="openCheckout()"><i class="fa-solid fa-bag-shopping"></i> Finalizar compra</button>
       <button class="btn-secondary full-width" onclick="toggleCart()">Seguir comprando</button>
     </div>
   </div>
@@ -278,11 +298,10 @@
   <div class="modal-overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
   <div class="modal" id="checkoutModal">
     <div class="modal-header">
-      <h3>📋 Finalizar pedido</h3>
-      <button onclick="closeCheckout()">✕</button>
+      <h3><i class="fa-solid fa-clipboard-list"></i> Finalizar pedido</h3>
+      <button onclick="closeCheckout()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body" id="checkoutBody">
-      <!-- Step 1: datos -->
       <div id="step1">
         <p class="step-label">Paso 1 de 2 — Tus datos</p>
         <div class="form-grid">
@@ -305,17 +324,17 @@
           <div class="form-group full">
             <label>Forma de pago *</label>
             <div class="payment-opts">
-              <label class="pay-opt"><input type="radio" name="pago" value="efectivo" checked /><span>💵 Efectivo</span></label>
-              <label class="pay-opt"><input type="radio" name="pago" value="transferencia" /><span>🏦 Transferencia</span></label>
-              <label class="pay-opt"><input type="radio" name="pago" value="tarjeta" /><span>💳 Tarjeta</span></label>
-              <label class="pay-opt"><input type="radio" name="pago" value="mercadopago" /><span>💙 MercadoPago</span></label>
+              <label class="pay-opt"><input type="radio" name="pago" value="efectivo" checked /><i class="fa-solid fa-money-bill-wave"></i><span>Efectivo</span></label>
+              <label class="pay-opt"><input type="radio" name="pago" value="transferencia" /><i class="fa-solid fa-building-columns"></i><span>Transferencia</span></label>
+              <label class="pay-opt"><input type="radio" name="pago" value="tarjeta" /><i class="fa-solid fa-credit-card"></i><span>Tarjeta</span></label>
+              <label class="pay-opt"><input type="radio" name="pago" value="mercadopago" /><i class="fa-solid fa-mobile-screen-button"></i><span>MercadoPago</span></label>
             </div>
           </div>
           <div class="form-group full">
             <label>Tipo de entrega *</label>
             <div class="payment-opts">
-              <label class="pay-opt"><input type="radio" name="entrega" value="envio" checked /><span>🚚 Envío a domicilio</span></label>
-              <label class="pay-opt"><input type="radio" name="entrega" value="retiro" /><span>🏪 Retiro en tienda</span></label>
+              <label class="pay-opt"><input type="radio" name="entrega" value="envio" checked /><i class="fa-solid fa-truck"></i><span>Envío a domicilio</span></label>
+              <label class="pay-opt"><input type="radio" name="entrega" value="retiro" /><i class="fa-solid fa-store"></i><span>Retiro en tienda</span></label>
             </div>
           </div>
         </div>
@@ -324,12 +343,11 @@
           <div id="ckItemsList"></div>
           <div class="ck-total-row"><span>Total:</span><strong id="ckTotalShow"></strong></div>
         </div>
-        <button class="btn-primary full-width" onclick="confirmOrder()" style="margin-top:16px">Confirmar pedido →</button>
+        <button class="btn-primary full-width" onclick="confirmOrder()" style="margin-top:16px">Confirmar pedido <i class="fa-solid fa-arrow-right"></i></button>
       </div>
-      <!-- Step 2: confirmación -->
       <div id="step2" style="display:none">
         <div class="order-success">
-          <div class="success-icon">✅</div>
+          <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
           <h3>¡Pedido recibido!</h3>
           <p>Gracias por tu compra en <strong>Casa Spezia</strong>.</p>
           <div class="order-box" id="orderBox"></div>
@@ -344,45 +362,45 @@
   <div class="modal-overlay" id="pagosOverlay" onclick="closePagosModal()"></div>
   <div class="modal" id="pagosModal">
     <div class="modal-header">
-      <h3>💳 Formas de pago</h3>
-      <button onclick="closePagosModal()">✕</button>
+      <h3><i class="fa-solid fa-credit-card"></i> Formas de pago</h3>
+      <button onclick="closePagosModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <div class="pagos-grid">
         <div class="pago-card">
-          <span class="pago-icon">💵</span>
+          <i class="fa-solid fa-money-bill-wave pago-icon"></i>
           <h4>Efectivo</h4>
           <p>Pagá en el local o al momento de la entrega. Sin recargo.</p>
         </div>
         <div class="pago-card">
-          <span class="pago-icon">🏦</span>
+          <i class="fa-solid fa-building-columns pago-icon"></i>
           <h4>Transferencia bancaria</h4>
           <p>Transferí al alias o CBU y envianos el comprobante. Sin recargo.</p>
         </div>
         <div class="pago-card">
-          <span class="pago-icon">💙</span>
+          <i class="fa-solid fa-mobile-screen-button pago-icon"></i>
           <h4>MercadoPago</h4>
           <p>Pagá con tu cuenta de MercadoPago, QR o link de pago.</p>
         </div>
         <div class="pago-card">
-          <span class="pago-icon">💳</span>
+          <i class="fa-solid fa-credit-card pago-icon"></i>
           <h4>Tarjeta de débito</h4>
           <p>Todas las tarjetas de débito. Sin recargo.</p>
         </div>
         <div class="pago-card">
-          <span class="pago-icon">💳</span>
+          <i class="fa-regular fa-credit-card pago-icon"></i>
           <h4>Tarjeta de crédito</h4>
           <p>Hasta 12 cuotas sin interés con todas las tarjetas.</p>
         </div>
         <div class="pago-card">
-          <span class="pago-icon">📱</span>
+          <i class="fa-solid fa-wallet pago-icon"></i>
           <h4>Billeteras digitales</h4>
           <p>Ualá, Naranja X, Modo y otras billeteras virtuales.</p>
         </div>
       </div>
       <div class="pagos-nota">
-        <strong>📍 Retiro en tienda:</strong> Av. San Martín 359, Tancacha - Córdoba<br/>
-        <strong>📞 Consultas:</strong> 3571662603 &nbsp;·&nbsp; casaspezia@hotmail.com
+        <i class="fa-solid fa-location-dot"></i> <strong>Retiro en tienda:</strong> Av. San Martín 359, Tancacha - Córdoba<br/>
+        <i class="fa-solid fa-phone"></i> <strong>Consultas:</strong> 3571662603 &nbsp;·&nbsp; casaspezia@hotmail.com
       </div>
     </div>
   </div>

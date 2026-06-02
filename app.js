@@ -98,8 +98,8 @@ function productCard(p) {
       ${p.photo
         ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" />`
         : `<span>${p.emoji}</span>`}
-      ${p.pinned ? `<span class="product-tag pinned">📌 Destacado</span>` : p.tag ? `<span class="product-tag ${p.tag === 'new' ? 'new' : ''}">${p.tag === 'sale' ? `${discount}% OFF` : 'Nuevo'}</span>` : ''}
-      <button class="product-fav ${isFav ? 'active' : ''}" onclick="toggleFav(${p.id})">${isFav ? '❤️' : '♡'}</button>
+      ${p.pinned ? `<span class="product-tag pinned"><i class="fa-solid fa-thumbtack"></i> Destacado</span>` : p.tag ? `<span class="product-tag ${p.tag === 'new' ? 'new' : ''}">${p.tag === 'sale' ? `${discount}% OFF` : 'Nuevo'}</span>` : ''}
+      <button class="product-fav ${isFav ? 'active' : ''}" onclick="toggleFav(${p.id})"><i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i></button>
     </div>
     <div class="product-body">
       <div class="product-brand">${p.brand}</div>
@@ -111,7 +111,7 @@ function productCard(p) {
         ${discount ? `<span class="product-discount">${discount}% OFF</span>` : ''}
       </div>
       <div class="product-cuotas">${p.cuotas > 1 ? `<span>${p.cuotas} cuotas sin interés de $${Math.round(p.price/p.cuotas).toLocaleString('es-AR')}</span>` : 'Pago único'}</div>
-      ${lowStock ? `<div class="low-stock">⚠️ Últimas ${p.stock} unidades</div>` : ''}
+      ${lowStock ? `<div class="low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Últimas ${p.stock} unidades</div>` : ''}
       <button class="btn-add ${inCart ? 'added' : ''}" onclick="addToCart(${p.id})">
         ${inCart ? '✓ En el carrito' : '+ Agregar al carrito'}
       </button>

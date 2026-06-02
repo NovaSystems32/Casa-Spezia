@@ -207,6 +207,63 @@ img { max-width: 100%; display: block; }
 .cart-total strong { font-size: 22px; font-weight: 800; }
 .full-width { width: 100%; padding: 13px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; margin-bottom: 8px; }
 
+/* ===== FONT AWESOME – SIZING & PLACEMENT ===== */
+
+/* Header top */
+.header-top i { font-size: 12px; margin-right: 4px; }
+
+/* Search button */
+.search-bar button i { font-size: 15px; }
+
+/* Header action buttons */
+.btn-icon i { font-size: 20px; }
+.btn-account i { font-size: 13px; margin-right: 4px; }
+
+/* Nav links */
+.nav-link i { font-size: 12px; margin-right: 4px; }
+
+/* Category cards */
+.cat-icon { font-size: 26px; display: block; margin-bottom: 2px; }
+
+/* Hero cards */
+.hero-icon i { font-size: 34px; color: var(--yellow); }
+
+/* Banners */
+.banner-fa-icon { font-size: 72px; opacity: .45; flex-shrink: 0; }
+
+/* Why us */
+.why-icon { font-size: 34px; display: block; margin-bottom: 12px; color: var(--yellow); }
+
+/* Footer social */
+.social-links a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.08); color: #aaa;
+  font-size: 15px; transition: all .2s;
+}
+.social-links a:hover { background: var(--yellow); color: var(--dark); transform: translateY(-2px); }
+
+/* Footer contact icons */
+.fc-icon { width: 16px; color: var(--yellow); font-size: 13px; margin-right: 6px; }
+
+/* Pago cards */
+.pago-icon { font-size: 30px; color: var(--carbon); display: block; margin-bottom: 8px; }
+
+/* Cart / Checkout icons */
+.cart-header i, .modal-header i { font-size: 18px; margin-right: 6px; }
+.cart-header button i, .modal-header button i { font-size: 16px; margin: 0; }
+.pay-opt i { font-size: 15px; margin-right: 6px; color: var(--carbon); }
+
+/* Success icon */
+.success-icon i { font-size: 52px; color: #16a34a; }
+
+/* No results */
+.no-results i { font-size: 48px; color: #ccc; display: block; margin-bottom: 12px; }
+
+/* Show more arrow */
+#showMoreArrow { font-size: 13px; transition: transform .2s; }
+.btn-show-more.expanded #showMoreArrow { transform: rotate(180deg); }
+
 /* ===== SHOW MORE ===== */
 .show-more-wrap { display: flex; align-items: center; gap: 16px; margin-top: 32px; }
 .show-more-line { flex: 1; height: 1px; background: var(--border); }
