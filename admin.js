@@ -223,6 +223,43 @@ function viewOrder(firestoreId) {
 }
 
 async function changeOrderEstado(firestoreId, newEstado) {
+  const orders = window._orders || [];
+  const order  = orders.find(o => o.firestoreId === firestoreId);
+  if (!order) return;
+
+  const estadoAnterior = order.estado;
+
+  // si se cancela → devolver stock
+  if (newEstado === 'cancelado' && estadoAnterior !== 'cancelado') {
+    const batch = db.batch();
+    batch.update(db.collection('orders').doc(firestoreId), { estado: newEstado });
+    (order.items || []).forEach(item => {
+      if (!item.firestoreId) return;
+      batch.update(db.collection('products').doc(item.firestoreId), {
+        stock: firebase.firestore.FieldValue.increment(item.qty)
+      });
+    });
+    await batch.commit();
+    showToast('✓ Pedido cancelado — stock restaurado');
+    return;
+  }
+
+  // si sale de cancelado → descontar stock de nuevo
+  if (estadoAnterior === 'cancelado' && newEstado !== 'cancelado') {
+    const batch = db.batch();
+    batch.update(db.collection('orders').doc(firestoreId), { estado: newEstado });
+    (order.items || []).forEach(item => {
+      if (!item.firestoreId) return;
+      batch.update(db.collection('products').doc(item.firestoreId), {
+        stock: firebase.firestore.FieldValue.increment(-item.qty)
+      });
+    });
+    await batch.commit();
+    showToast('✓ Estado actualizado — stock ajustado');
+    return;
+  }
+
+  // cualquier otro cambio de estado
   await db.collection('orders').doc(firestoreId).update({ estado: newEstado });
   showToast('✓ Estado actualizado');
 }
