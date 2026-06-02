@@ -14,7 +14,7 @@
     <div class="header-top">
       <div class="container">
         <span>📦 Envío gratis en compras mayores a $50.000</span>
-        <span>📞 (011) 4567-8900 &nbsp;|&nbsp; Lun–Sáb 8–20h</span>
+        <span>📞 3571662603 &nbsp;|&nbsp; Lun–Sáb 8–20h</span>
       </div>
     </div>
     <div class="header-main">
@@ -26,12 +26,10 @@
             <span class="logo-sub">Ferretería</span>
           </div>
         </div>
-
         <div class="search-bar">
           <input type="text" id="searchInput" placeholder="Buscar productos, marcas, categorías…" />
           <button onclick="searchProducts()">🔍</button>
         </div>
-
         <div class="header-actions">
           <button class="btn-icon" onclick="toggleFavorites()">
             <span>♡</span>
@@ -45,8 +43,6 @@
         </div>
       </div>
     </div>
-
-    <!-- NAV -->
     <nav class="nav">
       <div class="container nav-inner">
         <button class="nav-link active" onclick="filterCategory('all')">Todo</button>
@@ -103,38 +99,14 @@
   <section class="quick-cats">
     <div class="container">
       <div class="cats-grid">
-        <button class="cat-card" onclick="filterCategory('herramientas')">
-          <span class="cat-emoji">🔨</span>
-          <span>Herramientas</span>
-        </button>
-        <button class="cat-card" onclick="filterCategory('electricidad')">
-          <span class="cat-emoji">⚡</span>
-          <span>Electricidad</span>
-        </button>
-        <button class="cat-card" onclick="filterCategory('plomeria')">
-          <span class="cat-emoji">🚿</span>
-          <span>Plomería</span>
-        </button>
-        <button class="cat-card" onclick="filterCategory('pintura')">
-          <span class="cat-emoji">🎨</span>
-          <span>Pintura</span>
-        </button>
-        <button class="cat-card" onclick="filterCategory('fijacion')">
-          <span class="cat-emoji">🔩</span>
-          <span>Fijación</span>
-        </button>
-        <button class="cat-card" onclick="filterCategory('seguridad')">
-          <span class="cat-emoji">🔐</span>
-          <span>Seguridad</span>
-        </button>
-        <button class="cat-card" onclick="filterCategory('jardin')">
-          <span class="cat-emoji">🌱</span>
-          <span>Jardín</span>
-        </button>
-        <button class="cat-card" onclick="filterCategory('all')">
-          <span class="cat-emoji">📦</span>
-          <span>Ver todo</span>
-        </button>
+        <button class="cat-card" onclick="filterCategory('herramientas')"><span class="cat-emoji">🔨</span><span>Herramientas</span></button>
+        <button class="cat-card" onclick="filterCategory('electricidad')"><span class="cat-emoji">⚡</span><span>Electricidad</span></button>
+        <button class="cat-card" onclick="filterCategory('plomeria')"><span class="cat-emoji">🚿</span><span>Plomería</span></button>
+        <button class="cat-card" onclick="filterCategory('pintura')"><span class="cat-emoji">🎨</span><span>Pintura</span></button>
+        <button class="cat-card" onclick="filterCategory('fijacion')"><span class="cat-emoji">🔩</span><span>Fijación</span></button>
+        <button class="cat-card" onclick="filterCategory('seguridad')"><span class="cat-emoji">🔐</span><span>Seguridad</span></button>
+        <button class="cat-card" onclick="filterCategory('jardin')"><span class="cat-emoji">🌱</span><span>Jardín</span></button>
+        <button class="cat-card" onclick="filterCategory('all')"><span class="cat-emoji">📦</span><span>Ver todo</span></button>
       </div>
     </div>
   </section>
@@ -156,7 +128,7 @@
           <div>
             <span class="banner-tag">Nuevo</span>
             <h3>Sistema de<br />Seguridad Smart</h3>
-            <p>Ceraduras y alarmas inteligentes</p>
+            <p>Cerraduras y alarmas inteligentes</p>
             <button class="btn-white" onclick="filterCategory('seguridad')">Ver más</button>
           </div>
           <span class="banner-emoji">🔐</span>
@@ -204,28 +176,12 @@
   <!-- POR QUÉ ELEGIRNOS -->
   <section class="why-us">
     <div class="container">
-      <h2>¿Por qué elegir Casa Spezia?</h2>
+      <h2>¿Por qué elegir <span>Casa Spezia</span>?</h2>
       <div class="why-grid">
-        <div class="why-card">
-          <span class="why-icon">🚚</span>
-          <h4>Envío rápido</h4>
-          <p>Entregamos en 24–48 hs en CABA y GBA. Envíos a todo el país.</p>
-        </div>
-        <div class="why-card">
-          <span class="why-icon">✅</span>
-          <h4>Productos originales</h4>
-          <p>Solo vendemos marcas reconocidas con garantía de fábrica.</p>
-        </div>
-        <div class="why-card">
-          <span class="why-icon">💳</span>
-          <h4>Pagá en cuotas</h4>
-          <p>Hasta 12 cuotas sin interés con todas las tarjetas.</p>
-        </div>
-        <div class="why-card">
-          <span class="why-icon">🔄</span>
-          <h4>Devoluciones</h4>
-          <p>30 días para devolver o cambiar tu compra sin preguntas.</p>
-        </div>
+        <div class="why-card"><span class="why-icon">🚚</span><h4>Envío rápido</h4><p>Entregamos en 24–48 hs. Envíos a todo el país.</p></div>
+        <div class="why-card"><span class="why-icon">✅</span><h4>Productos originales</h4><p>Solo vendemos marcas reconocidas con garantía de fábrica.</p></div>
+        <div class="why-card"><span class="why-icon">💳</span><h4>Pagá en cuotas</h4><p>Hasta 12 cuotas sin interés con todas las tarjetas.</p></div>
+        <div class="why-card"><span class="why-icon">🔄</span><h4>Devoluciones</h4><p>30 días para devolver o cambiar tu compra sin preguntas.</p></div>
       </div>
     </div>
   </section>
@@ -263,14 +219,14 @@
           <li><a href="#">Formas de pago</a></li>
           <li><a href="#">Envíos y devoluciones</a></li>
           <li><a href="#">Preguntas frecuentes</a></li>
-          <li><a href="#">Trabaja con nosotros</a></li>
+          <li><a href="admin.html">Panel Admin</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Contacto</h4>
         <ul>
-          <li>📍 Av. Corrientes 3456, CABA</li>
-          <li>📞 (011) 4567-8900</li>
+          <li>📍 Av. San Martín 359</li>
+          <li>📞 3571662603</li>
           <li>✉️ ventas@casaspezia.com.ar</li>
           <li>🕐 Lun–Sáb: 8:00 – 20:00</li>
         </ul>
@@ -279,7 +235,7 @@
     <div class="footer-bottom">
       <div class="container">
         <p>© 2026 Casa Spezia. Todos los derechos reservados.</p>
-        <p>Diseño web · Política de privacidad · Términos y condiciones</p>
+        <p>Política de privacidad · Términos y condiciones</p>
       </div>
     </div>
   </footer>
@@ -303,8 +259,74 @@
         <span>Total:</span>
         <strong id="cartTotal">$0</strong>
       </div>
-      <button class="btn-primary full-width">Finalizar compra</button>
+      <button class="btn-primary full-width" onclick="openCheckout()">Finalizar compra</button>
       <button class="btn-secondary full-width" onclick="toggleCart()">Seguir comprando</button>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
+  <div class="modal" id="checkoutModal">
+    <div class="modal-header">
+      <h3>📋 Finalizar pedido</h3>
+      <button onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body" id="checkoutBody">
+      <!-- Step 1: datos -->
+      <div id="step1">
+        <p class="step-label">Paso 1 de 2 — Tus datos</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre completo *</label>
+            <input type="text" id="ckNombre" placeholder="Juan García" />
+          </div>
+          <div class="form-group">
+            <label>Teléfono *</label>
+            <input type="tel" id="ckTel" placeholder="3571xxxxxx" />
+          </div>
+          <div class="form-group full">
+            <label>Dirección de entrega *</label>
+            <input type="text" id="ckDir" placeholder="Calle, número, ciudad" />
+          </div>
+          <div class="form-group full">
+            <label>Notas adicionales</label>
+            <textarea id="ckNotas" placeholder="Indicaciones especiales, horario de entrega…" rows="3"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Forma de pago *</label>
+            <div class="payment-opts">
+              <label class="pay-opt"><input type="radio" name="pago" value="efectivo" checked /><span>💵 Efectivo</span></label>
+              <label class="pay-opt"><input type="radio" name="pago" value="transferencia" /><span>🏦 Transferencia</span></label>
+              <label class="pay-opt"><input type="radio" name="pago" value="tarjeta" /><span>💳 Tarjeta</span></label>
+              <label class="pay-opt"><input type="radio" name="pago" value="mercadopago" /><span>💙 MercadoPago</span></label>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Tipo de entrega *</label>
+            <div class="payment-opts">
+              <label class="pay-opt"><input type="radio" name="entrega" value="envio" checked /><span>🚚 Envío a domicilio</span></label>
+              <label class="pay-opt"><input type="radio" name="entrega" value="retiro" /><span>🏪 Retiro en tienda</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="ck-summary">
+          <strong>Resumen del pedido</strong>
+          <div id="ckItemsList"></div>
+          <div class="ck-total-row"><span>Total:</span><strong id="ckTotalShow"></strong></div>
+        </div>
+        <button class="btn-primary full-width" onclick="confirmOrder()" style="margin-top:16px">Confirmar pedido →</button>
+      </div>
+      <!-- Step 2: confirmación -->
+      <div id="step2" style="display:none">
+        <div class="order-success">
+          <div class="success-icon">✅</div>
+          <h3>¡Pedido recibido!</h3>
+          <p>Gracias por tu compra en <strong>Casa Spezia</strong>.</p>
+          <div class="order-box" id="orderBox"></div>
+          <p class="order-contact">Te contactaremos al <strong id="ckTelShow"></strong> para confirmar el pedido.</p>
+          <button class="btn-primary full-width" onclick="closeCheckout()">Volver a la tienda</button>
+        </div>
+      </div>
     </div>
   </div>
 
