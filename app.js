@@ -23,9 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function listenProducts() {
   showLoadingGrid();
   db.collection('products')
-    .orderBy('createdAt', 'desc')
     .onSnapshot(snapshot => {
-      allProducts = snapshot.docs.map(doc => ({ firestoreId: doc.id, ...doc.data() }));
+      allProducts = snapshot.docs
+        .map(doc => ({ firestoreId: doc.id, ...doc.data() }))
+        .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
       renderProducts();
     }, err => {
       console.error('Error cargando productos:', err);

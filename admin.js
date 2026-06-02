@@ -60,8 +60,10 @@ let unsubStock    = null;
 
 // ===== DASHBOARD =====
 function loadDashboard() {
-  db.collection('orders').orderBy('createdAt','desc').get().then(snap => {
-    const orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  db.collection('orders').get().then(snap => {
+    const orders = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
     const pending = orders.filter(o => o.estado === 'pendiente').length;
     const totalSales = orders.filter(o => o.estado !== 'cancelado').reduce((s,o) => s + o.total, 0);
     document.getElementById('statPedidos').textContent    = orders.length;
@@ -99,12 +101,22 @@ function loadDashboard() {
 
 // ===== PEDIDOS =====
 function listenOrders() {
-  if (unsubOrders) return; // ya escuchando
+  // si ya hay listener activo, solo re-renderizar
+  if (unsubOrders) { renderOrders(); return; }
   unsubOrders = db.collection('orders')
-    .orderBy('createdAt','desc')
     .onSnapshot(snap => {
-      window._orders = snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+      // ordenar por fecha del lado del cliente (evita índice en Firestore)
+      window._orders = snap.docs
+        .map(d => ({ firestoreId: d.id, ...d.data() }))
+        .sort((a, b) => {
+          const ta = a.createdAt?.seconds || 0;
+          const tb = b.createdAt?.seconds || 0;
+          return tb - ta;
+        });
       renderOrders();
+    }, err => {
+      console.error('Error pedidos:', err);
+      showToast('Error al cargar pedidos: ' + err.message);
     });
 }
 
@@ -212,10 +224,14 @@ async function deleteOrder(firestoreId) {
 function listenAdminProducts() {
   if (unsubProducts) { renderAdminProducts(); return; }
   unsubProducts = db.collection('products')
-    .orderBy('createdAt','desc')
     .onSnapshot(snap => {
-      window._products = snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+      window._products = snap.docs
+        .map(d => ({ firestoreId: d.id, ...d.data() }))
+        .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
       renderAdminProducts();
+    }, err => {
+      console.error('Error productos:', err);
+      showToast('Error al cargar productos: ' + err.message);
     });
 }
 
@@ -392,10 +408,14 @@ function removePhoto() {
 function listenStock() {
   if (unsubStock) { renderStock(); return; }
   unsubStock = db.collection('products')
-    .orderBy('createdAt','desc')
     .onSnapshot(snap => {
-      window._products = snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+      window._products = snap.docs
+        .map(d => ({ firestoreId: d.id, ...d.data() }))
+        .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
       renderStock();
+    }, err => {
+      console.error('Error stock:', err);
+      showToast('Error al cargar stock: ' + err.message);
     });
 }
 
