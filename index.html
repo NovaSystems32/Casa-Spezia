@@ -399,6 +399,31 @@
     </div>
   </div>
 
+  <!-- MODAL DETALLE PRODUCTO -->
+  <div class="modal-overlay" id="prodDetailOverlay" onclick="closeProdDetail()"></div>
+  <div class="modal prod-detail-modal" id="prodDetailModal">
+    <div class="modal-header">
+      <h3 id="pdTitle">Detalle del producto</h3>
+      <button onclick="closeProdDetail()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body prod-detail-body">
+      <div class="pd-gallery">
+        <div class="pd-main-img" id="pdMainImg"></div>
+        <div class="pd-thumbs" id="pdThumbs"></div>
+      </div>
+      <div class="pd-info">
+        <div class="product-brand" id="pdBrand"></div>
+        <h2 class="pd-name" id="pdName"></h2>
+        <div class="product-rating" id="pdRating"></div>
+        <div class="product-price-row" id="pdPrice"></div>
+        <div class="product-cuotas" id="pdCuotas"></div>
+        <div class="pd-desc" id="pdDesc"></div>
+        <div id="pdLowStock"></div>
+        <div id="pdBtnWrap"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 

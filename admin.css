@@ -216,6 +216,39 @@ ul { list-style: none; }
 .change-estado-row { padding: 14px 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border); }
 .change-estado-row label { font-size: 13px; font-weight: 600; }
 
+/* ===== MULTI PHOTO GRID ===== */
+.multi-photo-grid {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; min-height: 10px;
+}
+.photo-thumb {
+  width: 90px; height: 90px; border-radius: 8px; overflow: hidden;
+  border: 2px solid var(--border); position: relative; flex-shrink: 0;
+}
+.photo-thumb.main-thumb { border-color: var(--yellow); }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--yellow); color: var(--dark);
+  font-size: 9px; font-weight: 700; text-align: center; padding: 2px;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.thumb-remove {
+  position: absolute; top: 3px; right: 3px;
+  background: rgba(0,0,0,.6); color: white; border: none;
+  width: 20px; height: 20px; border-radius: 50%; font-size: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background .2s;
+}
+.thumb-remove:hover { background: #ef4444; }
+.btn-add-photo {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 16px; border: 2px dashed var(--border);
+  border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
+  color: var(--gray); background: var(--light); cursor: pointer;
+  transition: all .2s;
+}
+.btn-add-photo:hover { border-color: var(--yellow); color: var(--dark); background: #fffbe8; }
+
 /* ===== PHOTO UPLOAD ===== */
 .photo-upload-area {
   border: 2px dashed var(--border);

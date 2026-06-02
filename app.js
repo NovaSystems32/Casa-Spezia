@@ -128,12 +128,15 @@ function productCard(p) {
   const sinStock = stockNum <= 0;
   const lowStock = !sinStock && stockNum <= 5;
 
+  const firstPhoto = (p.photos && p.photos.length) ? p.photos[0] : (p.photo || null);
+
   return `
   <div class="product-card">
-    <div class="product-img">
-      ${p.photo
-        ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" />`
+    <div class="product-img" onclick="openProdDetail('${p.firestoreId}')" style="cursor:pointer" title="Ver detalle">
+      ${firstPhoto
+        ? `<img src="${firstPhoto}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" />`
         : `<i class="fa-solid fa-box-open" style="font-size:60px;color:#ccc"></i>`}
+      ${(p.photos && p.photos.length > 1) ? `<span class="multi-photo-badge"><i class="fa-solid fa-images"></i> ${p.photos.length}</span>` : ''}
       ${p.pinned
         ? `<span class="product-tag pinned"><i class="fa-solid fa-thumbtack"></i> Destacado</span>`
         : p.tag
@@ -428,6 +431,80 @@ function loadFavorites() {
   document.getElementById('favBadge').textContent = favorites.length;
 }
 function toggleFavorites() { showToast('Sección de favoritos próximamente'); }
+
+// ===== MODAL DETALLE PRODUCTO =====
+function openProdDetail(firestoreId) {
+  const p = allProducts.find(x => x.firestoreId === firestoreId);
+  if (!p) return;
+
+  const photos   = (p.photos && p.photos.length) ? p.photos : (p.photo ? [p.photo] : []);
+  const stockNum = Number(p.stock ?? 0);
+  const sinStock = stockNum <= 0;
+  const discount = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+  const inCart   = cart.find(c => c.firestoreId === firestoreId);
+
+  document.getElementById('pdTitle').textContent  = p.name;
+  document.getElementById('pdBrand').textContent  = p.brand;
+  document.getElementById('pdName').textContent   = p.name;
+  document.getElementById('pdRating').innerHTML   = `<span class="stars">${'★'.repeat(Math.floor(p.rating||4))}</span><span>${p.rating||4} (${p.reviews||0} reseñas)</span>`;
+  document.getElementById('pdPrice').innerHTML    = `
+    <span class="product-price">$${Number(p.price).toLocaleString('es-AR')}</span>
+    ${p.oldPrice ? `<span class="product-old-price">$${Number(p.oldPrice).toLocaleString('es-AR')}</span>` : ''}
+    ${discount    ? `<span class="product-discount">${discount}% OFF</span>` : ''}`;
+  document.getElementById('pdCuotas').innerHTML   = p.cuotas > 1
+    ? `<span>${p.cuotas} cuotas sin interés de $${Math.round(p.price/p.cuotas).toLocaleString('es-AR')}</span>`
+    : 'Pago único';
+  document.getElementById('pdDesc').innerHTML     = p.description
+    ? `<p class="pd-description">${p.description}</p>`
+    : '';
+  document.getElementById('pdLowStock').innerHTML = (!sinStock && stockNum <= 5)
+    ? `<div class="low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Últimas ${stockNum} unidades</div>`
+    : '';
+  document.getElementById('pdBtnWrap').innerHTML  = sinStock
+    ? `<button class="btn-add btn-sin-stock" disabled><i class="fa-solid fa-ban"></i> Sin stock</button>`
+    : `<button class="btn-add ${inCart?'added':''}" onclick="addToCart('${firestoreId}');renderProdDetailBtn('${firestoreId}')">
+         ${inCart ? '<i class="fa-solid fa-check"></i> En el carrito' : '<i class="fa-solid fa-plus"></i> Agregar al carrito'}
+       </button>`;
+
+  // galería
+  const mainImg = document.getElementById('pdMainImg');
+  const thumbs  = document.getElementById('pdThumbs');
+
+  if (photos.length) {
+    mainImg.innerHTML = `<img src="${photos[0]}" id="pdMainImgEl" alt="${p.name}" />`;
+    thumbs.innerHTML  = photos.length > 1
+      ? photos.map((src, i) => `
+          <div class="pd-thumb ${i===0?'active':''}" onclick="changePdPhoto('${src}',this)">
+            <img src="${src}" alt="foto ${i+1}" />
+          </div>`).join('')
+      : '';
+  } else {
+    mainImg.innerHTML = `<i class="fa-solid fa-box-open" style="font-size:80px;color:#ddd"></i>`;
+    thumbs.innerHTML  = '';
+  }
+
+  document.getElementById('prodDetailModal').classList.add('open');
+  document.getElementById('prodDetailOverlay').classList.add('open');
+}
+
+function changePdPhoto(src, el) {
+  document.getElementById('pdMainImgEl').src = src;
+  document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function renderProdDetailBtn(firestoreId) {
+  const inCart = cart.find(c => c.firestoreId === firestoreId);
+  document.getElementById('pdBtnWrap').innerHTML = `
+    <button class="btn-add ${inCart?'added':''}" onclick="addToCart('${firestoreId}');renderProdDetailBtn('${firestoreId}')">
+      ${inCart ? '<i class="fa-solid fa-check"></i> En el carrito' : '<i class="fa-solid fa-plus"></i> Agregar al carrito'}
+    </button>`;
+}
+
+function closeProdDetail() {
+  document.getElementById('prodDetailModal').classList.remove('open');
+  document.getElementById('prodDetailOverlay').classList.remove('open');
+}
 
 // ===== MODAL FORMAS DE PAGO =====
 function openPagosModal() {
