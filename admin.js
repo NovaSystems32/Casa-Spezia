@@ -223,45 +223,71 @@ function viewOrder(firestoreId) {
 }
 
 async function changeOrderEstado(firestoreId, newEstado) {
-  const orders = window._orders || [];
-  const order  = orders.find(o => o.firestoreId === firestoreId);
-  if (!order) return;
+  try {
+    // leer el pedido DIRECTO desde Firestore (no del caché)
+    const snap = await db.collection('orders').doc(firestoreId).get();
+    if (!snap.exists) { showToast('Pedido no encontrado'); return; }
 
-  const estadoAnterior = order.estado;
+    const order        = snap.data();
+    const estadoActual = order.estado || '';
+    const items        = order.items  || [];
 
-  // si se cancela → devolver stock
-  if (newEstado === 'cancelado' && estadoAnterior !== 'cancelado') {
     const batch = db.batch();
-    batch.update(db.collection('orders').doc(firestoreId), { estado: newEstado });
-    (order.items || []).forEach(item => {
-      if (!item.firestoreId) return;
-      batch.update(db.collection('products').doc(item.firestoreId), {
-        stock: firebase.firestore.FieldValue.increment(item.qty)
-      });
-    });
-    await batch.commit();
-    showToast('✓ Pedido cancelado — stock restaurado');
-    return;
-  }
+    const orderRef = db.collection('orders').doc(firestoreId);
 
-  // si sale de cancelado → descontar stock de nuevo
-  if (estadoAnterior === 'cancelado' && newEstado !== 'cancelado') {
-    const batch = db.batch();
-    batch.update(db.collection('orders').doc(firestoreId), { estado: newEstado });
-    (order.items || []).forEach(item => {
-      if (!item.firestoreId) return;
-      batch.update(db.collection('products').doc(item.firestoreId), {
-        stock: firebase.firestore.FieldValue.increment(-item.qty)
-      });
-    });
-    await batch.commit();
-    showToast('✓ Estado actualizado — stock ajustado');
-    return;
-  }
+    // 1) actualizar estado
+    batch.update(orderRef, { estado: newEstado });
 
-  // cualquier otro cambio de estado
-  await db.collection('orders').doc(firestoreId).update({ estado: newEstado });
-  showToast('✓ Estado actualizado');
+    // 2) ajustar stock según el cambio de estado
+    if (newEstado === 'cancelado' && estadoActual !== 'cancelado') {
+      // cancelar → devolver stock
+      items.forEach(item => {
+        if (!item.firestoreId || !item.qty) return;
+        batch.update(
+          db.collection('products').doc(item.firestoreId),
+          { stock: firebase.firestore.FieldValue.increment(Number(item.qty)) }
+        );
+      });
+      await batch.commit();
+      // actualizar caché local
+      if (window._orders) {
+        const local = window._orders.find(o => o.firestoreId === firestoreId);
+        if (local) local.estado = newEstado;
+      }
+      showToast('✓ Pedido cancelado — stock restaurado');
+
+    } else if (estadoActual === 'cancelado' && newEstado !== 'cancelado') {
+      // reactivar → volver a descontar stock
+      items.forEach(item => {
+        if (!item.firestoreId || !item.qty) return;
+        batch.update(
+          db.collection('products').doc(item.firestoreId),
+          { stock: firebase.firestore.FieldValue.increment(-Number(item.qty)) }
+        );
+      });
+      await batch.commit();
+      if (window._orders) {
+        const local = window._orders.find(o => o.firestoreId === firestoreId);
+        if (local) local.estado = newEstado;
+      }
+      showToast('✓ Pedido reactivado — stock ajustado');
+
+    } else {
+      // solo cambio de estado, sin tocar stock
+      await batch.commit();
+      if (window._orders) {
+        const local = window._orders.find(o => o.firestoreId === firestoreId);
+        if (local) local.estado = newEstado;
+      }
+      showToast('✓ Estado actualizado');
+    }
+
+    renderOrders();
+
+  } catch(err) {
+    console.error('Error cambiando estado:', err);
+    showToast('Error: ' + err.message);
+  }
 }
 
 function closeOrderDetail() {
