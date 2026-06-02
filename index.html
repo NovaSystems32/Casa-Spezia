@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa Spezia – Ferretería Online</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="container">
+        <span>📦 Envío gratis en compras mayores a $50.000</span>
+        <span>📞 (011) 4567-8900 &nbsp;|&nbsp; Lun–Sáb 8–20h</span>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-inner">
+        <div class="logo">
+          <span class="logo-icon">🔧</span>
+          <div>
+            <span class="logo-name">Casa Spezia</span>
+            <span class="logo-sub">Ferretería</span>
+          </div>
+        </div>
+
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Buscar productos, marcas, categorías…" />
+          <button onclick="searchProducts()">🔍</button>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn-icon" onclick="toggleFavorites()">
+            <span>♡</span>
+            <span class="badge" id="favBadge">0</span>
+          </button>
+          <button class="btn-icon cart-btn" onclick="toggleCart()">
+            <span>🛒</span>
+            <span class="badge" id="cartBadge">0</span>
+          </button>
+          <button class="btn-account">Mi cuenta</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav">
+      <div class="container nav-inner">
+        <button class="nav-link active" onclick="filterCategory('all')">Todo</button>
+        <button class="nav-link" onclick="filterCategory('herramientas')">Herramientas</button>
+        <button class="nav-link" onclick="filterCategory('electricidad')">Electricidad</button>
+        <button class="nav-link" onclick="filterCategory('plomeria')">Plomería</button>
+        <button class="nav-link" onclick="filterCategory('pintura')">Pintura</button>
+        <button class="nav-link" onclick="filterCategory('fijacion')">Fijación</button>
+        <button class="nav-link" onclick="filterCategory('seguridad')">Seguridad</button>
+        <button class="nav-link" onclick="filterCategory('jardin')">Jardín</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <span class="hero-badge">Nuevos productos 2026</span>
+        <h1>Todo para tu<br /><span class="highlight">hogar y obra</span></h1>
+        <p>Herramientas profesionales, materiales de construcción y artículos de ferretería con la mejor calidad y precio.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="filterCategory('all')">Ver catálogo</button>
+          <button class="btn-secondary" onclick="scrollToOffers()">Ofertas del día</button>
+        </div>
+        <div class="hero-stats">
+          <div><strong>+5.000</strong><span>productos</span></div>
+          <div><strong>+20 años</strong><span>de experiencia</span></div>
+          <div><strong>4.9 ★</strong><span>calificación</span></div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-card">
+          <div class="hero-icon">🔨</div>
+          <div class="hero-card-text">
+            <p>Kit profesional</p>
+            <strong>Herramientas Stanley</strong>
+            <span class="hero-price">desde $12.990</span>
+          </div>
+        </div>
+        <div class="hero-card secondary">
+          <div class="hero-icon">⚡</div>
+          <div class="hero-card-text">
+            <p>Oferta especial</p>
+            <strong>Material eléctrico</strong>
+            <span class="hero-price">hasta 30% OFF</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS RÁPIDAS -->
+  <section class="quick-cats">
+    <div class="container">
+      <div class="cats-grid">
+        <button class="cat-card" onclick="filterCategory('herramientas')">
+          <span class="cat-emoji">🔨</span>
+          <span>Herramientas</span>
+        </button>
+        <button class="cat-card" onclick="filterCategory('electricidad')">
+          <span class="cat-emoji">⚡</span>
+          <span>Electricidad</span>
+        </button>
+        <button class="cat-card" onclick="filterCategory('plomeria')">
+          <span class="cat-emoji">🚿</span>
+          <span>Plomería</span>
+        </button>
+        <button class="cat-card" onclick="filterCategory('pintura')">
+          <span class="cat-emoji">🎨</span>
+          <span>Pintura</span>
+        </button>
+        <button class="cat-card" onclick="filterCategory('fijacion')">
+          <span class="cat-emoji">🔩</span>
+          <span>Fijación</span>
+        </button>
+        <button class="cat-card" onclick="filterCategory('seguridad')">
+          <span class="cat-emoji">🔐</span>
+          <span>Seguridad</span>
+        </button>
+        <button class="cat-card" onclick="filterCategory('jardin')">
+          <span class="cat-emoji">🌱</span>
+          <span>Jardín</span>
+        </button>
+        <button class="cat-card" onclick="filterCategory('all')">
+          <span class="cat-emoji">📦</span>
+          <span>Ver todo</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER OFERTAS -->
+  <section class="offers-banner" id="offers">
+    <div class="container">
+      <div class="banner-grid">
+        <div class="banner-card banner-orange">
+          <div>
+            <span class="banner-tag">Flash Sale</span>
+            <h3>Taladros y<br />Atornilladores</h3>
+            <p>Hasta <strong>40% OFF</strong></p>
+            <button class="btn-white" onclick="filterCategory('herramientas')">Comprar ahora</button>
+          </div>
+          <span class="banner-emoji">🔩</span>
+        </div>
+        <div class="banner-card banner-blue">
+          <div>
+            <span class="banner-tag">Nuevo</span>
+            <h3>Sistema de<br />Seguridad Smart</h3>
+            <p>Ceraduras y alarmas inteligentes</p>
+            <button class="btn-white" onclick="filterCategory('seguridad')">Ver más</button>
+          </div>
+          <span class="banner-emoji">🔐</span>
+        </div>
+        <div class="banner-card banner-green">
+          <div>
+            <span class="banner-tag">Temporada</span>
+            <h3>Todo para<br />el Jardín</h3>
+            <p>Herramientas y accesorios</p>
+            <button class="btn-white" onclick="filterCategory('jardin')">Ver más</button>
+          </div>
+          <span class="banner-emoji">🌿</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="products-section" id="products">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 id="sectionTitle">Todos los productos</h2>
+          <p id="sectionCount">Mostrando todos los productos</p>
+        </div>
+        <div class="sort-bar">
+          <select id="sortSelect" onchange="sortProducts()">
+            <option value="default">Ordenar por</option>
+            <option value="price-asc">Menor precio</option>
+            <option value="price-desc">Mayor precio</option>
+            <option value="name">Nombre A–Z</option>
+            <option value="rating">Mejor calificación</option>
+          </select>
+        </div>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+      <div class="no-results hidden" id="noResults">
+        <span>😕</span>
+        <p>No encontramos productos para tu búsqueda.</p>
+        <button class="btn-primary" onclick="filterCategory('all')">Ver todo el catálogo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ ELEGIRNOS -->
+  <section class="why-us">
+    <div class="container">
+      <h2>¿Por qué elegir Casa Spezia?</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <span class="why-icon">🚚</span>
+          <h4>Envío rápido</h4>
+          <p>Entregamos en 24–48 hs en CABA y GBA. Envíos a todo el país.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">✅</span>
+          <h4>Productos originales</h4>
+          <p>Solo vendemos marcas reconocidas con garantía de fábrica.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">💳</span>
+          <h4>Pagá en cuotas</h4>
+          <p>Hasta 12 cuotas sin interés con todas las tarjetas.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🔄</span>
+          <h4>Devoluciones</h4>
+          <p>30 días para devolver o cambiar tu compra sin preguntas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">🔧</span>
+          <div>
+            <span class="logo-name">Casa Spezia</span>
+            <span class="logo-sub">Ferretería</span>
+          </div>
+        </div>
+        <p>Tu ferretería de confianza desde 2003. Calidad, variedad y el mejor servicio.</p>
+        <div class="social-links">
+          <a href="#">📘</a><a href="#">📷</a><a href="#">🐦</a><a href="#">▶️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Categorías</h4>
+        <ul>
+          <li><a href="#" onclick="filterCategory('herramientas')">Herramientas</a></li>
+          <li><a href="#" onclick="filterCategory('electricidad')">Electricidad</a></li>
+          <li><a href="#" onclick="filterCategory('plomeria')">Plomería</a></li>
+          <li><a href="#" onclick="filterCategory('pintura')">Pintura</a></li>
+          <li><a href="#" onclick="filterCategory('jardin')">Jardín</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Información</h4>
+        <ul>
+          <li><a href="#">Sobre nosotros</a></li>
+          <li><a href="#">Formas de pago</a></li>
+          <li><a href="#">Envíos y devoluciones</a></li>
+          <li><a href="#">Preguntas frecuentes</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li>📍 Av. Corrientes 3456, CABA</li>
+          <li>📞 (011) 4567-8900</li>
+          <li>✉️ ventas@casaspezia.com.ar</li>
+          <li>🕐 Lun–Sáb: 8:00 – 20:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 Casa Spezia. Todos los derechos reservados.</p>
+        <p>Diseño web · Política de privacidad · Términos y condiciones</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CARRITO SIDEBAR -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>🛒 Mi carrito</h3>
+      <button onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <span>🛒</span>
+        <p>Tu carrito está vacío</p>
+        <button class="btn-primary" onclick="toggleCart()">Seguir comprando</button>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total:</span>
+        <strong id="cartTotal">$0</strong>
+      </div>
+      <button class="btn-primary full-width">Finalizar compra</button>
+      <button class="btn-secondary full-width" onclick="toggleCart()">Seguir comprando</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
