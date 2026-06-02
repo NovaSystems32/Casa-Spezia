@@ -98,7 +98,9 @@ function productCard(p) {
   return `
   <div class="product-card">
     <div class="product-img">
-      <span>${p.emoji}</span>
+      ${p.photo
+        ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" />`
+        : `<span>${p.emoji}</span>`}
       ${p.tag ? `<span class="product-tag ${p.tag === 'new' ? 'new' : ''}">${p.tag === 'sale' ? `${discount}% OFF` : 'Nuevo'}</span>` : ''}
       <button class="product-fav ${isFav ? 'active' : ''}" onclick="toggleFav(${p.id})">${isFav ? '❤️' : '♡'}</button>
     </div>

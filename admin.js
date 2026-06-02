@@ -111,7 +111,7 @@ function loadDashboard() {
 
   document.getElementById('statPedidos').textContent   = orders.length;
   document.getElementById('statPendientes').textContent = pending;
-  document.getElementById('statVentas').textContent    = '$' + totalSales.toLocaleString('es-AR');
+  document.getElementById('statVentas').textContent    = '$ ' + totalSales.toLocaleString('es-AR') + ' ARS';
   document.getElementById('statProductos').textContent = prods.filter(p => p.stock > 0).length;
 
   // últimos pedidos
@@ -263,7 +263,7 @@ function renderAdminProducts() {
     const discount = p.oldPrice ? Math.round((1 - p.price/p.oldPrice)*100) : 0;
     return `<tr>
       <td><div class="prod-cell">
-        <div class="prod-emoji">${p.emoji}</div>
+        <div class="prod-emoji">${p.photo ? `<img src="${p.photo}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">` : p.emoji}</div>
         <div><strong>${p.name}</strong><span>${p.brand}</span></div>
       </div></td>
       <td>${p.brand}</td>
@@ -282,18 +282,68 @@ function renderAdminProducts() {
   }).join('');
 }
 
+// ===== FOTO / COMPRESIÓN =====
+function handlePhotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const MAX_SIZE = 600;   // px máximo lado más largo
+  const QUALITY  = 0.72;  // calidad JPEG (0–1)
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // calcular nuevas dimensiones manteniendo aspecto
+      let w = img.width, h = img.height;
+      if (w > h) { if (w > MAX_SIZE) { h = Math.round(h * MAX_SIZE / w); w = MAX_SIZE; } }
+      else       { if (h > MAX_SIZE) { w = Math.round(w * MAX_SIZE / h); h = MAX_SIZE; } }
+
+      const canvas = document.createElement('canvas');
+      canvas.width  = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+      const compressed = canvas.toDataURL('image/jpeg', QUALITY);
+      const originalKB  = Math.round(file.size / 1024);
+      const compressedKB = Math.round((compressed.length * 3) / 4 / 1024);
+
+      document.getElementById('pf_photoData').value = compressed;
+      document.getElementById('photoPreview').innerHTML = `
+        <img src="${compressed}" alt="preview" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />
+        <div class="photo-compress-badge">📦 ${originalKB} KB → ${compressedKB} KB</div>`;
+      document.getElementById('btnRemovePhoto').classList.remove('hidden');
+      document.getElementById('photoUploadArea').style.border = '2px solid var(--yellow)';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  document.getElementById('pf_photoData').value = '';
+  document.getElementById('pf_photo').value = '';
+  document.getElementById('photoPreview').innerHTML = `
+    <span>📷</span>
+    <p>Hacé clic para subir una foto</p>
+    <small>JPG, PNG, WEBP — se comprime automáticamente</small>`;
+  document.getElementById('btnRemovePhoto').classList.add('hidden');
+  document.getElementById('photoUploadArea').style.border = '';
+}
+
 function openProductForm(id) {
-  document.getElementById('pf_id').value    = id || '';
-  document.getElementById('pf_name').value  = '';
-  document.getElementById('pf_brand').value = '';
-  document.getElementById('pf_price').value = '';
+  document.getElementById('pf_id').value       = id || '';
+  document.getElementById('pf_name').value     = '';
+  document.getElementById('pf_brand').value    = '';
+  document.getElementById('pf_price').value    = '';
   document.getElementById('pf_oldprice').value = '';
-  document.getElementById('pf_stock').value = '';
-  document.getElementById('pf_emoji').value = '🔧';
-  document.getElementById('pf_tag').value   = '';
-  document.getElementById('pf_cuotas').value = '1';
+  document.getElementById('pf_stock').value    = '';
+  document.getElementById('pf_emoji').value    = '🔧';
+  document.getElementById('pf_tag').value      = '';
+  document.getElementById('pf_cuotas').value   = '1';
   document.getElementById('pf_category').value = 'herramientas';
   document.getElementById('productFormTitle').textContent = id ? 'Editar producto' : 'Nuevo producto';
+  removePhoto();
 
   if (id) {
     const extra = getExtraProducts();
@@ -308,6 +358,13 @@ function openProductForm(id) {
       document.getElementById('pf_tag').value      = p.tag || '';
       document.getElementById('pf_cuotas').value   = p.cuotas || 1;
       document.getElementById('pf_category').value = p.category;
+      if (p.photo) {
+        document.getElementById('pf_photoData').value = p.photo;
+        document.getElementById('photoPreview').innerHTML = `
+          <img src="${p.photo}" alt="preview" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />`;
+        document.getElementById('btnRemovePhoto').classList.remove('hidden');
+        document.getElementById('photoUploadArea').style.border = '2px solid var(--yellow)';
+      }
     }
   }
   document.getElementById('productFormModal').classList.remove('hidden');
@@ -322,16 +379,17 @@ function closeProductForm() {
 }
 
 function saveProduct() {
-  const name    = document.getElementById('pf_name').value.trim();
-  const brand   = document.getElementById('pf_brand').value.trim();
-  const price   = parseFloat(document.getElementById('pf_price').value);
-  const oldPrice= parseFloat(document.getElementById('pf_oldprice').value) || null;
-  const stock   = parseInt(document.getElementById('pf_stock').value);
-  const emoji   = document.getElementById('pf_emoji').value.trim() || '🔧';
-  const tag     = document.getElementById('pf_tag').value || null;
-  const cuotas  = parseInt(document.getElementById('pf_cuotas').value);
-  const category= document.getElementById('pf_category').value;
-  const editId  = document.getElementById('pf_id').value;
+  const name     = document.getElementById('pf_name').value.trim();
+  const brand    = document.getElementById('pf_brand').value.trim();
+  const price    = parseFloat(document.getElementById('pf_price').value);
+  const oldPrice = parseFloat(document.getElementById('pf_oldprice').value) || null;
+  const stock    = parseInt(document.getElementById('pf_stock').value);
+  const emoji    = document.getElementById('pf_emoji').value.trim() || '🔧';
+  const tag      = document.getElementById('pf_tag').value || null;
+  const cuotas   = parseInt(document.getElementById('pf_cuotas').value);
+  const category = document.getElementById('pf_category').value;
+  const editId   = document.getElementById('pf_id').value;
+  const photo    = document.getElementById('pf_photoData').value || null;
 
   if (!name || !brand || isNaN(price) || isNaN(stock)) { showToast('⚠️ Completá los campos obligatorios'); return; }
 
@@ -339,10 +397,9 @@ function saveProduct() {
 
   if (editId) {
     const idx = extra.findIndex(p => p.id === parseInt(editId));
-    if (idx >= 0) extra[idx] = { ...extra[idx], name, brand, price, oldPrice, stock, emoji, tag, cuotas, category };
+    if (idx >= 0) extra[idx] = { ...extra[idx], name, brand, price, oldPrice, stock, emoji, tag, cuotas, category, photo };
   } else {
-    const newId = Date.now();
-    extra.push({ id: newId, name, brand, price, oldPrice, stock, emoji, tag, cuotas, category, rating: 4.5, reviews: 0 });
+    extra.push({ id: Date.now(), name, brand, price, oldPrice, stock, emoji, tag, cuotas, category, photo, rating: 4.5, reviews: 0 });
   }
 
   saveExtraProducts(extra);

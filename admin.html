@@ -241,7 +241,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Emoji / Ícono</label>
+            <label>Emoji / Ícono (si no sube foto)</label>
             <input type="text" id="pf_emoji" placeholder="🔧" maxlength="4" />
           </div>
           <div class="form-group">
@@ -252,7 +252,20 @@
               <option value="new">Nuevo</option>
             </select>
           </div>
+          <div class="form-group full">
+            <label>Foto del producto</label>
+            <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('pf_photo').click()">
+              <div id="photoPreview" class="photo-placeholder">
+                <span>📷</span>
+                <p>Hacé clic para subir una foto</p>
+                <small>JPG, PNG, WEBP — se comprime automáticamente</small>
+              </div>
+            </div>
+            <input type="file" id="pf_photo" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)" />
+            <button type="button" class="btn-remove-photo hidden" id="btnRemovePhoto" onclick="removePhoto()">✕ Quitar foto</button>
+          </div>
           <input type="hidden" id="pf_id" />
+          <input type="hidden" id="pf_photoData" />
           <div class="form-group full" style="display:flex;gap:10px;margin-top:8px">
             <button class="btn-primary" style="flex:1" onclick="saveProduct()">Guardar producto</button>
             <button class="btn-cancel" style="flex:1" onclick="closeProductForm()">Cancelar</button>

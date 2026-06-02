@@ -216,6 +216,61 @@ ul { list-style: none; }
 .change-estado-row { padding: 14px 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border); }
 .change-estado-row label { font-size: 13px; font-weight: 600; }
 
+/* ===== PHOTO UPLOAD ===== */
+.photo-upload-area {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s;
+  overflow: hidden;
+  position: relative;
+  background: var(--light);
+}
+.photo-upload-area:hover { border-color: var(--yellow); background: #fffbe8; }
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--gray);
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+.photo-placeholder span { font-size: 32px; }
+.photo-placeholder p    { font-size: 13px; font-weight: 600; margin: 0; }
+.photo-placeholder small { font-size: 11px; color: #aaa; }
+.photo-compress-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,.65);
+  color: var(--yellow);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 50px;
+}
+.btn-remove-photo {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #ef4444;
+  font-weight: 600;
+  background: #fee2e2;
+  padding: 4px 12px;
+  border-radius: 6px;
+  transition: background .2s;
+}
+.btn-remove-photo:hover { background: #fecaca; }
+
+/* moneda ARS */
+.currency-label { font-size: 11px; color: var(--gray); font-weight: 600; vertical-align: super; margin-right: 1px; }
+
 /* ===== TOAST ===== */
 .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--carbon); color: var(--yellow); padding: 12px 24px; border-radius: 50px; font-size: 13px; font-weight: 600; z-index: 999; transition: transform .3s; pointer-events: none; white-space: nowrap; border: 2px solid var(--yellow); }
 .toast.show { transform: translateX(-50%) translateY(0); }
