@@ -101,22 +101,32 @@ function loadDashboard() {
 
 // ===== PEDIDOS =====
 function listenOrders() {
-  // si ya hay listener activo, solo re-renderizar
-  if (unsubOrders) { renderOrders(); return; }
+  // mostrar loading mientras carga
+  const tbody = document.getElementById('ordersTbody');
+  const empty = document.getElementById('ordersEmpty');
+  if (tbody) tbody.innerHTML = `
+    <tr><td colspan="9" style="text-align:center;padding:40px;color:#aaa">
+      <i class="fa-solid fa-spinner fa-spin" style="font-size:24px;display:block;margin-bottom:10px"></i>
+      Cargando pedidos…
+    </td></tr>`;
+  if (empty) empty.classList.add('hidden');
+
+  // cancelar listener anterior si existe
+  if (unsubOrders) { unsubOrders(); unsubOrders = null; }
+
   unsubOrders = db.collection('orders')
     .onSnapshot(snap => {
-      // ordenar por fecha del lado del cliente (evita índice en Firestore)
       window._orders = snap.docs
         .map(d => ({ firestoreId: d.id, ...d.data() }))
-        .sort((a, b) => {
-          const ta = a.createdAt?.seconds || 0;
-          const tb = b.createdAt?.seconds || 0;
-          return tb - ta;
-        });
+        .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
       renderOrders();
     }, err => {
       console.error('Error pedidos:', err);
-      showToast('Error al cargar pedidos: ' + err.message);
+      if (tbody) tbody.innerHTML = `
+        <tr><td colspan="9" style="text-align:center;padding:40px;color:#ef4444">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size:24px;display:block;margin-bottom:10px"></i>
+          Error: ${err.message}
+        </td></tr>`;
     });
 }
 
@@ -134,6 +144,10 @@ function renderOrders() {
   if (orders.length === 0) {
     tbody.innerHTML = '';
     empty.classList.remove('hidden');
+    empty.innerHTML = `
+      <span>📭</span>
+      <p>No hay pedidos todavía</p>
+      <small style="color:#aaa;font-size:12px">Los pedidos aparecen aquí cuando los clientes compran en la tienda</small>`;
     return;
   }
   empty.classList.add('hidden');
