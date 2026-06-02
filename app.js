@@ -80,7 +80,7 @@ function renderProducts() {
     }
   }
 
-  const titles = { all:'Todos los productos', herramientas:'Herramientas', electricidad:'Electricidad', plomeria:'Plomería', pintura:'Pintura', fijacion:'Fijación', seguridad:'Seguridad', jardin:'Jardín' };
+  const titles = { all:'Todos los productos', herramientas:'Herramientas', electricidad:'Electricidad', plomeria:'Plomería', pintura:'Pintura', fijacion:'Fijación', construccion:'Materiales de Construcción', jardin:'Jardín' };
   document.getElementById('sectionTitle').textContent = currentSearch ? `Resultados para "${currentSearch}"` : (titles[currentCategory] || 'Productos');
   document.getElementById('sectionCount').textContent = `${list.length} producto${list.length !== 1 ? 's' : ''} encontrado${list.length !== 1 ? 's' : ''}`;
 }
@@ -125,7 +125,7 @@ function filterCategory(cat) {
   currentSearch = '';
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
-  const map = { all:0, herramientas:1, electricidad:2, plomeria:3, pintura:4, fijacion:5, seguridad:6, jardin:7 };
+  const map = { all:0, herramientas:1, electricidad:2, plomeria:3, pintura:4, fijacion:5, construccion:6, jardin:7 };
   const navBtns = document.querySelectorAll('.nav-link');
   if (navBtns[map[cat]] !== undefined) navBtns[map[cat]].classList.add('active');
   renderProducts();
