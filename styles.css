@@ -78,14 +78,110 @@ img { max-width: 100%; display: block; }
 .hero-stats strong { color: var(--yellow); font-size: 20px; font-weight: 800; }
 .hero-stats span { color: #888; font-size: 12px; }
 
-.hero-image { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
-.hero-card { background: rgba(255,255,255,.07); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); padding: 20px; display: flex; align-items: center; gap: 16px; width: 280px; transition: transform .2s; }
-.hero-card:hover { transform: translateY(-4px); }
-.hero-card.secondary { background: rgba(245,200,66,.15); border-color: rgba(245,200,66,.4); }
-.hero-icon { font-size: 36px; }
-.hero-card-text p { color: #888; font-size: 11px; margin-bottom: 2px; }
-.hero-card-text strong { color: white; font-size: 14px; display: block; margin-bottom: 4px; }
-.hero-price { color: var(--yellow); font-size: 13px; font-weight: 700; }
+.hero-image { display: flex; flex-direction: column; gap: 16px; align-items: center; justify-content: center; }
+
+/* ===== STORE CIRCLE ===== */
+.store-circle-wrap {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* anillo exterior giratorio */
+.store-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.ring-outer {
+  width: 310px; height: 310px;
+  border: 3px dashed rgba(245,200,66,.5);
+  animation: spinRing 12s linear infinite;
+}
+.ring-mid {
+  width: 290px; height: 290px;
+  border: 2px solid rgba(245,200,66,.15);
+  animation: pulseRing 2.8s ease-in-out infinite;
+}
+
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulseRing {
+  0%, 100% { transform: scale(1);    opacity: .3; }
+  50%       { transform: scale(1.05); opacity: .8; }
+}
+
+/* imagen circular */
+.store-circle {
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  border: 4px solid var(--yellow);
+  box-shadow: 0 0 0 6px rgba(245,200,66,.15), 0 16px 48px rgba(0,0,0,.5);
+  cursor: pointer;
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s;
+}
+.store-circle img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .5s ease;
+  display: block;
+}
+.store-circle:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 8px rgba(245,200,66,.3), 0 24px 60px rgba(0,0,0,.6);
+}
+.store-circle:hover img { transform: scale(1.1); }
+
+/* overlay al hover */
+.store-circle-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(26,26,26,.78);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity .35s;
+  backdrop-filter: blur(4px);
+}
+.store-circle:hover .store-circle-overlay { opacity: 1; }
+.store-circle-overlay i    { font-size: 28px; color: var(--yellow); }
+.store-circle-overlay span { color: white; font-size: 15px; font-weight: 700; }
+.store-circle-overlay small{ color: #ccc; font-size: 12px; text-align: center; line-height: 1.5; }
+
+/* badges flotantes */
+.store-badge {
+  position: absolute;
+  background: var(--yellow);
+  color: var(--dark);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.3);
+  white-space: nowrap;
+  animation: floatBadge 3s ease-in-out infinite;
+}
+.badge-top    { top: 10px;    right: -10px; animation-delay: 0s; }
+.badge-bottom { bottom: 10px; left: -10px;  animation-delay: 1.5s; }
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
 
 /* ===== QUICK CATEGORIES ===== */
 .quick-cats { padding: 32px 0; background: var(--white); border-bottom: 1px solid var(--border); }
@@ -355,7 +451,11 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) {
   .hero-content { grid-template-columns: 1fr; }
   .hero h1 { font-size: 36px; }
-  .hero-image { display: none; }
+  .hero-image { display: flex; margin-top: 20px; }
+  .store-circle-wrap { width: 240px; height: 240px; }
+  .store-circle { width: 200px; height: 200px; }
+  .ring-outer { width: 234px; height: 234px; }
+  .ring-mid   { width: 218px; height: 218px; }
   .banner-grid { grid-template-columns: 1fr; }
   .products-grid { grid-template-columns: repeat(2, 1fr); }
   .cats-grid { grid-template-columns: repeat(4, 1fr); }
