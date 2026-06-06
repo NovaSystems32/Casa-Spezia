@@ -735,31 +735,31 @@ function closeImport() {
   document.getElementById('btnConfirmImport').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Confirmar importación';
 }
 
-// ===== DESCARGAR PLANTILLA EXCEL =====
+// ===== DESCARGAR PLANTILLA CSV (abre en Excel) =====
 function downloadTemplate() {
-  const headers = [
-    'nombre','marca','categoria','precio','precio_anterior',
-    'stock','cuotas','descripcion','medidas','colores','etiqueta'
-  ];
-  const ejemplos = [
-    ['Caño Corrugado 3/4 x 25m','Iram','plomeria',2490,'',50,1,'Caño corrugado plástico reforzado apto para instalaciones eléctricas','25 metros','gris',''],
-    ['Pintura Látex Interior 20L','Sherwin Williams','pintura',18990,22990,15,6,'Pintura látex interior de alta cobertura, lavable y de rápido secado','Balde 20 litros','blanco, marfil, beige','sale'],
-    ['Taladro Percutor 750W','Black & Decker','herramientas',21990,27990,8,12,'Taladro percutor con velocidad variable y mandril de 13mm','—','negro/amarillo','sale'],
-    ['Tornillos 4x40 x100u','Fischer','fijacion',890,'',200,1,'Tornillos cabeza plana para madera, incluye 100 unidades','4x40mm','plateado',''],
+  const filas = [
+    ['nombre','marca','categoria','precio','precio_anterior','stock','cuotas','descripcion','medidas','colores','etiqueta'],
+    ['Caño Corrugado 3/4 x 25m','Iram','plomeria','2490','','50','1','Caño corrugado plástico reforzado','25 metros','gris',''],
+    ['Pintura Látex Interior 20L','Sherwin Williams','pintura','18990','22990','15','6','Pintura látex de alta cobertura lavable','Balde 20 litros','blanco / marfil','sale'],
+    ['Taladro Percutor 750W','Black & Decker','herramientas','21990','27990','8','12','Taladro percutor velocidad variable mandril 13mm','largo 30cm','negro/amarillo','sale'],
+    ['Tornillos 4x40 x100u','Fischer','fijacion','890','','200','1','Tornillos cabeza plana para madera x100 unidades','4x40mm','plateado',''],
   ];
 
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet([headers, ...ejemplos]);
+  // BOM + CSV con separador coma, celdas entre comillas para evitar problemas con tildes
+  const csv = '﻿' + filas
+    .map(row => row.map(c => `"${String(c).replace(/"/g,'""')}"`).join(','))
+    .join('\r\n');
 
-  // anchos de columna
-  ws['!cols'] = [
-    {wch:30},{wch:20},{wch:18},{wch:10},{wch:15},
-    {wch:8},{wch:8},{wch:45},{wch:18},{wch:20},{wch:10}
-  ];
-
-  XLSX.utils.book_append_sheet(wb, ws, 'Productos');
-  XLSX.writeFile(wb, 'plantilla_productos_casaspezia.xlsx');
-  showToast('✓ Plantilla descargada');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'plantilla_casaspezia.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✓ Plantilla descargada — abrila con Excel');
 }
 
 // ===== TOAST =====
