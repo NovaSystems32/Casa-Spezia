@@ -301,6 +301,24 @@ ul { list-style: none; }
 }
 .btn-remove-photo:hover { background: #fecaca; }
 
+/* ===== BOTONES EXCEL ===== */
+.btn-excel {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 16px; border-radius: var(--radius-sm);
+  background: #16a34a; color: white;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: all .2s; white-space: nowrap; border: none;
+}
+.btn-excel:hover { background: #15803d; transform: translateY(-1px); }
+.btn-template {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 16px; border-radius: var(--radius-sm);
+  background: var(--light); color: var(--carbon);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  border: 2px solid var(--border); transition: all .2s; white-space: nowrap;
+}
+.btn-template:hover { border-color: var(--yellow); background: #fffbe8; }
+
 /* ===== FONT AWESOME – ADMIN ===== */
 .nav-item i { font-size: 15px; width: 18px; text-align: center; margin-right: 2px; }
 .stat-icon i { font-size: 30px; }

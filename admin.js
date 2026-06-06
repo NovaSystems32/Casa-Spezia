@@ -558,6 +558,210 @@ async function updateStock(fid) {
   showToast('✓ Stock actualizado');
 }
 
+// ===== IMPORTAR EXCEL =====
+var importedRows = [];
+
+const CATEGORIAS_VALIDAS = ['herramientas','electricidad','plomeria','pintura','fijacion','construccion','jardin'];
+const COL_MAP = {
+  // acepta variantes del nombre de columna
+  nombre:          ['nombre','name','producto'],
+  marca:           ['marca','brand'],
+  categoria:       ['categoria','categoría','category'],
+  precio:          ['precio','price'],
+  precio_anterior: ['precio_anterior','precio anterior','old_price','precio_viejo'],
+  stock:           ['stock','cantidad','qty'],
+  cuotas:          ['cuotas'],
+  descripcion:     ['descripcion','descripción','description','detalle'],
+  medidas:         ['medidas','medida','dimensiones','tamaño'],
+  colores:         ['colores','color'],
+  etiqueta:        ['etiqueta','tag','oferta'],
+};
+
+function findCol(headers, key) {
+  const variants = COL_MAP[key] || [key];
+  return headers.find(h => variants.includes(h.toLowerCase().trim()));
+}
+
+function importExcel(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  event.target.value = '';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const workbook = XLSX.read(e.target.result, { type: 'binary' });
+      const sheet    = workbook.Sheets[workbook.SheetNames[0]];
+      const rows     = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+
+      if (!rows.length) { showToast('El archivo está vacío'); return; }
+
+      const headers = Object.keys(rows[0]);
+      importedRows  = [];
+      const errores = [];
+
+      rows.forEach((row, idx) => {
+        const num = idx + 2; // fila real en Excel (empieza en 2)
+
+        const nombre   = String(row[findCol(headers,'nombre')]   || '').trim();
+        const marca    = String(row[findCol(headers,'marca')]     || '').trim();
+        const catRaw   = String(row[findCol(headers,'categoria')] || '').trim().toLowerCase();
+        const precioRaw= row[findCol(headers,'precio')];
+        const stockRaw = row[findCol(headers,'stock')];
+
+        if (!nombre)   { errores.push(`Fila ${num}: falta el nombre`);    return; }
+        if (!marca)    { errores.push(`Fila ${num}: falta la marca`);     return; }
+        if (!precioRaw){ errores.push(`Fila ${num}: falta el precio`);    return; }
+
+        const precio   = parseFloat(String(precioRaw).replace(/[^0-9.,]/g,'').replace(',','.'));
+        const stock    = parseInt(String(stockRaw).replace(/[^0-9]/g,'')) || 0;
+        const oldPrice = parseFloat(String(row[findCol(headers,'precio_anterior')]||'').replace(/[^0-9.,]/g,'').replace(',','.')) || null;
+        const cuotas   = parseInt(row[findCol(headers,'cuotas')]) || 1;
+        const etiqueta = String(row[findCol(headers,'etiqueta')]||'').trim().toLowerCase();
+        const tag      = etiqueta === 'sale' || etiqueta === 'oferta' ? 'sale' : etiqueta === 'new' || etiqueta === 'nuevo' ? 'new' : null;
+
+        // descripción: unir descripción + medidas + colores
+        const desc     = String(row[findCol(headers,'descripcion')]||'').trim();
+        const medidas  = String(row[findCol(headers,'medidas')]    ||'').trim();
+        const colores  = String(row[findCol(headers,'colores')]    ||'').trim();
+        const descFull = [desc, medidas ? `Medidas: ${medidas}` : '', colores ? `Colores: ${colores}` : ''].filter(Boolean).join('\n');
+
+        // categoría: buscar la más parecida
+        const categoria = CATEGORIAS_VALIDAS.find(c => catRaw.includes(c) || c.includes(catRaw)) || 'herramientas';
+
+        if (isNaN(precio)) { errores.push(`Fila ${num}: precio inválido`); return; }
+
+        importedRows.push({ nombre, marca, categoria, precio, oldPrice, stock, cuotas, tag, description: descFull, emoji: '🔧', rating: 4.5, reviews: 0, photo: null, photos: [], pinned: false });
+      });
+
+      if (errores.length) {
+        showToast(`⚠ ${errores.length} fila(s) con errores — revisar consola`);
+        console.warn('Errores importación:', errores);
+      }
+
+      renderImportPreview();
+      document.getElementById('importModal').classList.remove('hidden');
+      document.getElementById('importOverlay').classList.remove('hidden');
+
+    } catch(err) {
+      console.error(err);
+      showToast('Error al leer el archivo: ' + err.message);
+    }
+  };
+  reader.readAsBinaryString(file);
+}
+
+function renderImportPreview() {
+  const catLabels = { herramientas:'Herramientas', electricidad:'Electricidad', plomeria:'Plomería', pintura:'Pintura', fijacion:'Fijación', construccion:'Construcción', jardin:'Jardín' };
+
+  document.getElementById('importSummary').innerHTML = `
+    <div style="background:#fffbe8;border:1px solid #e8e2cc;border-radius:8px;padding:12px 16px;font-size:14px">
+      <i class="fa-solid fa-circle-check" style="color:#16a34a"></i>
+      <strong>${importedRows.length} producto${importedRows.length!==1?'s':''}</strong> listos para importar.
+      Revisá la vista previa y confirmá.
+    </div>`;
+
+  document.getElementById('importPreviewBody').innerHTML = importedRows.map((p, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td><strong>${p.nombre}</strong></td>
+      <td>${p.marca}</td>
+      <td>${catLabels[p.categoria]||p.categoria}</td>
+      <td>$${Number(p.precio).toLocaleString('es-AR')}</td>
+      <td>${p.stock}</td>
+      <td>${p.cuotas > 1 ? p.cuotas + ' cuotas' : 'único'}</td>
+      <td style="max-width:200px;white-space:normal;font-size:12px;color:#666">${p.description||'—'}</td>
+      <td><span class="estado-badge estado-entregado"><i class="fa-solid fa-check"></i> OK</span></td>
+    </tr>`).join('');
+}
+
+async function confirmImport() {
+  if (!importedRows.length) return;
+
+  const btn = document.getElementById('btnConfirmImport');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo…';
+
+  try {
+    // subir en lotes de 20 (límite de Firestore batch = 500 pero igual lo hacemos por chunks)
+    const CHUNK = 20;
+    let total = 0;
+    for (let i = 0; i < importedRows.length; i += CHUNK) {
+      const chunk = importedRows.slice(i, i + CHUNK);
+      const batch = db.batch();
+      chunk.forEach(p => {
+        const ref = db.collection('products').doc();
+        batch.set(ref, {
+          name:        p.nombre,
+          brand:       p.marca,
+          category:    p.categoria,
+          price:       p.precio,
+          oldPrice:    p.oldPrice,
+          stock:       p.stock,
+          cuotas:      p.cuotas,
+          tag:         p.tag,
+          description: p.description,
+          emoji:       p.emoji,
+          photo:       null,
+          photos:      [],
+          pinned:      false,
+          rating:      4.5,
+          reviews:     0,
+          createdAt:   firebase.firestore.FieldValue.serverTimestamp()
+        });
+      });
+      await batch.commit();
+      total += chunk.length;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Subiendo ${total}/${importedRows.length}…`;
+    }
+
+    closeImport();
+    showToast(`✓ ${total} productos importados correctamente`);
+    importedRows = [];
+    listenAdminProducts();
+
+  } catch(err) {
+    console.error(err);
+    showToast('Error al importar: ' + err.message);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Confirmar importación';
+  }
+}
+
+function closeImport() {
+  document.getElementById('importModal').classList.add('hidden');
+  document.getElementById('importOverlay').classList.add('hidden');
+  document.getElementById('btnConfirmImport').disabled = false;
+  document.getElementById('btnConfirmImport').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Confirmar importación';
+}
+
+// ===== DESCARGAR PLANTILLA EXCEL =====
+function downloadTemplate() {
+  const headers = [
+    'nombre','marca','categoria','precio','precio_anterior',
+    'stock','cuotas','descripcion','medidas','colores','etiqueta'
+  ];
+  const ejemplos = [
+    ['Caño Corrugado 3/4 x 25m','Iram','plomeria',2490,'',50,1,'Caño corrugado plástico reforzado apto para instalaciones eléctricas','25 metros','gris',''],
+    ['Pintura Látex Interior 20L','Sherwin Williams','pintura',18990,22990,15,6,'Pintura látex interior de alta cobertura, lavable y de rápido secado','Balde 20 litros','blanco, marfil, beige','sale'],
+    ['Taladro Percutor 750W','Black & Decker','herramientas',21990,27990,8,12,'Taladro percutor con velocidad variable y mandril de 13mm','—','negro/amarillo','sale'],
+    ['Tornillos 4x40 x100u','Fischer','fijacion',890,'',200,1,'Tornillos cabeza plana para madera, incluye 100 unidades','4x40mm','plateado',''],
+  ];
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...ejemplos]);
+
+  // anchos de columna
+  ws['!cols'] = [
+    {wch:30},{wch:20},{wch:18},{wch:10},{wch:15},
+    {wch:8},{wch:8},{wch:45},{wch:18},{wch:20},{wch:10}
+  ];
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Productos');
+  XLSX.writeFile(wb, 'plantilla_productos_casaspezia.xlsx');
+  showToast('✓ Plantilla descargada');
+}
+
 // ===== TOAST =====
 function showToast(msg) {
   const t = document.getElementById('adminToast');

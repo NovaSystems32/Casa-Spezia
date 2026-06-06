@@ -175,7 +175,14 @@
       <section id="sec-productos" class="section">
         <div class="section-toolbar">
           <input type="text" id="searchProd" placeholder="Buscar producto…" oninput="renderAdminProducts()" />
-          <button class="btn-primary" onclick="openProductForm()">+ Nuevo producto</button>
+          <button class="btn-primary" onclick="openProductForm()"><i class="fa-solid fa-plus"></i> Nuevo producto</button>
+          <button class="btn-excel" onclick="document.getElementById('excelInput').click()">
+            <i class="fa-solid fa-file-excel"></i> Importar Excel
+          </button>
+          <button class="btn-template" onclick="downloadTemplate()">
+            <i class="fa-solid fa-download"></i> Plantilla
+          </button>
+          <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="importExcel(event)" />
         </div>
         <div class="table-wrap">
           <table class="data-table">
@@ -318,10 +325,40 @@
     </main>
   </div>
 
+  <!-- MODAL IMPORTAR EXCEL -->
+  <div class="modal-overlay hidden" id="importOverlay" onclick="closeImport()"></div>
+  <div class="modal-box hidden" id="importModal" style="width:900px;max-width:96vw">
+    <div class="modal-box-header">
+      <h3><i class="fa-solid fa-file-excel"></i> Importar productos desde Excel</h3>
+      <button onclick="closeImport()">✕</button>
+    </div>
+    <div style="padding:20px">
+      <div id="importSummary" style="margin-bottom:16px"></div>
+      <div style="overflow-x:auto;max-height:400px;overflow-y:auto">
+        <table class="data-table" id="importPreviewTable">
+          <thead>
+            <tr>
+              <th>#</th><th>Nombre</th><th>Marca</th><th>Categoría</th>
+              <th>Precio</th><th>Stock</th><th>Cuotas</th><th>Descripción</th><th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="importPreviewBody"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn-primary" style="flex:1" id="btnConfirmImport" onclick="confirmImport()">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar importación
+        </button>
+        <button class="btn-cancel" style="flex:1" onclick="closeImport()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="adminToast"></div>
 
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="firebase-config.js"></script>
   <script src="admin.js"></script>
 </body>
