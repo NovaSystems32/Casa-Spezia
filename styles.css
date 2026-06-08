@@ -296,6 +296,11 @@ img { max-width: 100%; display: block; }
 .footer-bottom { border-top: 1px solid #2a2a2a; padding: 18px 0; background: #111; }
 .footer-bottom .container { display: flex; justify-content: space-between; align-items: center; }
 .footer-bottom p { color: #444; font-size: 12px; }
+.footer-devby { background: #0a0a0a; padding: 14px 0; text-align: center; border-top: 1px solid #1a1a1a; }
+.devby-link { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; opacity: 0.7; transition: opacity .25s; }
+.devby-link:hover { opacity: 1; }
+.devby-link span { color: #666; font-size: 12px; letter-spacing: .5px; }
+.devby-logo { height: 28px; width: auto; object-fit: contain; filter: brightness(0) invert(1); }
 
 /* ===== CART SIDEBAR ===== */
 .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s; }
