@@ -300,7 +300,7 @@ img { max-width: 100%; display: block; }
 .devby-link { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; opacity: 0.7; transition: opacity .25s; }
 .devby-link:hover { opacity: 1; }
 .devby-link span { color: #666; font-size: 12px; letter-spacing: .5px; }
-.devby-logo { height: 28px; width: auto; object-fit: contain; filter: brightness(0) invert(1); }
+.devby-logo { height: 32px; width: auto; object-fit: contain; }
 
 /* ===== CART SIDEBAR ===== */
 .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s; }
